@@ -1,0 +1,23 @@
+{
+  "name": "@stencil/screenshot",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Stencil Screenshot Comparison App",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "stencil build && npm run remove.svgs",
+    "remove.svgs": "rimraf ../stencil/screenshot/app/build/app/svg",
+    "start": "stencil build --dev --watch --serve"
+  },
+  "dependencies": {
+    "@ionic/core": "4.0.0-beta.5",
+    "@stencil/core": "0.12.1"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.2"
+  },
+  "author": "Ionic Team",
+  "license": "MIT"
+}
