@@ -15,29 +15,39 @@ export namespace Components {
   interface AppRoot {}
   interface AppRootAttributes extends StencilHTMLAttributes {}
 
-  interface ScreenshotCompare {}
-  interface ScreenshotCompareAttributes extends StencilHTMLAttributes {}
+  interface SnapshotCompare {
+    'a': string;
+    'b': string;
+  }
+  interface SnapshotCompareAttributes extends StencilHTMLAttributes {
+    'a'?: string;
+    'b'?: string;
+  }
 
-  interface ScreenshotDetail {}
-  interface ScreenshotDetailAttributes extends StencilHTMLAttributes {}
+  interface SnapshotDetail {
+    'snapshotId': string;
+  }
+  interface SnapshotDetailAttributes extends StencilHTMLAttributes {
+    'snapshotId'?: string;
+  }
 
-  interface ScreenshotList {}
-  interface ScreenshotListAttributes extends StencilHTMLAttributes {}
+  interface SnapshotList {}
+  interface SnapshotListAttributes extends StencilHTMLAttributes {}
 }
 
 declare global {
   interface StencilElementInterfaces {
     'AppRoot': Components.AppRoot;
-    'ScreenshotCompare': Components.ScreenshotCompare;
-    'ScreenshotDetail': Components.ScreenshotDetail;
-    'ScreenshotList': Components.ScreenshotList;
+    'SnapshotCompare': Components.SnapshotCompare;
+    'SnapshotDetail': Components.SnapshotDetail;
+    'SnapshotList': Components.SnapshotList;
   }
 
   interface StencilIntrinsicElements {
     'app-root': Components.AppRootAttributes;
-    'screenshot-compare': Components.ScreenshotCompareAttributes;
-    'screenshot-detail': Components.ScreenshotDetailAttributes;
-    'screenshot-list': Components.ScreenshotListAttributes;
+    'snapshot-compare': Components.SnapshotCompareAttributes;
+    'snapshot-detail': Components.SnapshotDetailAttributes;
+    'snapshot-list': Components.SnapshotListAttributes;
   }
 
 
@@ -47,36 +57,36 @@ declare global {
     new (): HTMLAppRootElement;
   };
 
-  interface HTMLScreenshotCompareElement extends Components.ScreenshotCompare, HTMLStencilElement {}
-  var HTMLScreenshotCompareElement: {
-    prototype: HTMLScreenshotCompareElement;
-    new (): HTMLScreenshotCompareElement;
+  interface HTMLSnapshotCompareElement extends Components.SnapshotCompare, HTMLStencilElement {}
+  var HTMLSnapshotCompareElement: {
+    prototype: HTMLSnapshotCompareElement;
+    new (): HTMLSnapshotCompareElement;
   };
 
-  interface HTMLScreenshotDetailElement extends Components.ScreenshotDetail, HTMLStencilElement {}
-  var HTMLScreenshotDetailElement: {
-    prototype: HTMLScreenshotDetailElement;
-    new (): HTMLScreenshotDetailElement;
+  interface HTMLSnapshotDetailElement extends Components.SnapshotDetail, HTMLStencilElement {}
+  var HTMLSnapshotDetailElement: {
+    prototype: HTMLSnapshotDetailElement;
+    new (): HTMLSnapshotDetailElement;
   };
 
-  interface HTMLScreenshotListElement extends Components.ScreenshotList, HTMLStencilElement {}
-  var HTMLScreenshotListElement: {
-    prototype: HTMLScreenshotListElement;
-    new (): HTMLScreenshotListElement;
+  interface HTMLSnapshotListElement extends Components.SnapshotList, HTMLStencilElement {}
+  var HTMLSnapshotListElement: {
+    prototype: HTMLSnapshotListElement;
+    new (): HTMLSnapshotListElement;
   };
 
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement
-    'screenshot-compare': HTMLScreenshotCompareElement
-    'screenshot-detail': HTMLScreenshotDetailElement
-    'screenshot-list': HTMLScreenshotListElement
+    'snapshot-compare': HTMLSnapshotCompareElement
+    'snapshot-detail': HTMLSnapshotDetailElement
+    'snapshot-list': HTMLSnapshotListElement
   }
 
   interface ElementTagNameMap {
     'app-root': HTMLAppRootElement;
-    'screenshot-compare': HTMLScreenshotCompareElement;
-    'screenshot-detail': HTMLScreenshotDetailElement;
-    'screenshot-list': HTMLScreenshotListElement;
+    'snapshot-compare': HTMLSnapshotCompareElement;
+    'snapshot-detail': HTMLSnapshotDetailElement;
+    'snapshot-list': HTMLSnapshotListElement;
   }
 
 

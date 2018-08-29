@@ -1,0 +1,18 @@
+
+table.snapshot-detail {
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+  font-size: 12px;
+}
+
+.snapshot-detail td {
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  padding: 10px;
+  vertical-align: top;
+}
+
+.snapshot-detail .id {
+  margin-top: 0;
+  white-space: nowrap;
+}

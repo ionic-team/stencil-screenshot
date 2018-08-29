@@ -1,27 +1,27 @@
-import { Component, State } from '@stencil/core';
+import { Component, State, Prop } from '@stencil/core';
 import * as d from '../../declarations';
-import { deleteSnapshot, setMasterSnapshot } from '../../helpers/data';
+import { formatDate } from '../../helpers/data';
 
 
 @Component({
-  tag: 'screenshot-list',
-  styleUrl: 'screenshot-list.css'
+  tag: 'snapshot-list',
+  styleUrl: 'snapshot-list.css'
 })
-export class ScreenshotList {
+export class SnapshotList {
 
-  appData: d.AppData = { masterSnapshotId: null, snapshots: [] };
-  isAdmin = true;
+  @State() appData: d.AppData = { masterSnapshotId: null, snapshots: [] };
+  isAdmin = false;
 
   @State() a: string = null;
   @State() b: string = null;
 
-  componentWillLoad() {
-    return this.loadAppData();
-  }
+  @Prop({ connect: 'ion-alert-controller' }) alertCtrl: HTMLIonAlertControllerElement;
 
-  private async loadAppData() {
+  async componentWillLoad() {
+    this.isAdmin = (window.location.hostname === 'localhost')
+
     try {
-      const rsp = await fetch('/screenshot/data/data.json');
+      const rsp = await fetch(`/screenshot/data/data.json`);
       this.appData = await rsp.json();
 
       if (this.appData.masterSnapshotId) {
@@ -33,12 +33,64 @@ export class ScreenshotList {
     }
   }
 
-  private async setMasterSnapshot(id: string) {
-    setMasterSnapshot(id);
+  private async setMasterSnapshot(snapshotId: string) {
+    const alert = await this.alertCtrl.create({
+      header: `Set as Master: ${snapshotId}`,
+      message: `Are you sure you want to master snapshot to ${snapshotId}?`,
+      buttons: [
+        {
+          text: `Cancel`,
+          handler: () => {
+            alert.dismiss();
+          }
+        },
+        {
+          text: `Set as Master`,
+          handler: async () => {
+            try {
+              const rsp = await fetch(`/?set_master_snapshot=${snapshotId}`);
+              this.appData = await rsp.json();
+              alert.dismiss();
+
+            } catch (e) {
+              console.error(e);
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
-  private async deleteSnapshot(id: string) {
-    deleteSnapshot(id);
+  private async deleteSnapshot(snapshotId: string) {
+    const alert = await this.alertCtrl.create({
+      header: `Delete ${snapshotId}`,
+      message: `Are you sure you want to delete snapshot ${snapshotId}?`,
+      buttons: [
+        {
+          text: `Cancel`,
+          handler: () => {
+            alert.dismiss();
+          }
+        },
+        {
+          text: `Delete`,
+          handler: async () => {
+            try {
+              const rsp = await fetch(`/?delete_snapshot=${snapshotId}`);
+              this.appData = await rsp.json();
+              alert.dismiss();
+
+            } catch (e) {
+              console.error(e);
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   render() {
@@ -56,7 +108,7 @@ export class ScreenshotList {
       </ion-header>,
       <ion-content>
 
-        <ion-grid>
+        <table class="snapshot-list">
 
           {this.appData.snapshots.map(snapshot => {
             const rowCssClasses = {
@@ -64,9 +116,9 @@ export class ScreenshotList {
             };
 
             return (
-              <ion-row key={snapshot.id} class={rowCssClasses}>
+              <tr key={snapshot.id} class={rowCssClasses}>
 
-                <ion-col>
+                <td>
                   <ion-radio
                     onClick={() => {
                       if (this.a === snapshot.id) {
@@ -80,9 +132,9 @@ export class ScreenshotList {
                     }}
                     checked={this.a === snapshot.id}>
                   </ion-radio>
-                </ion-col>
+                </td>
 
-                <ion-col>
+                <td>
                   <ion-radio
                     onClick={() => {
                       if (this.b === snapshot.id) {
@@ -96,43 +148,43 @@ export class ScreenshotList {
                     }}
                     checked={this.b === snapshot.id}>
                   </ion-radio>
-                </ion-col>
+                </td>
 
-                <ion-col>
+                <td>
                   <ion-anchor href={'/' + snapshot.id}>{snapshot.id}</ion-anchor>
-                </ion-col>
+                </td>
 
-                <ion-col>
+                <td class="desc">
                   {snapshot.desc}
-                </ion-col>
+                </td>
 
-                <ion-col>
-                  {snapshot.timestamp}
-                </ion-col>
+                <td>
+                  {formatDate(snapshot.timestamp)}
+                </td>
 
                 {(this.isAdmin ? (
-                  <ion-col>
+                  <td>
                     <ion-anchor
                       tappable
                       hidden={this.appData.masterSnapshotId === snapshot.id}
-                      onClick={this.setMasterSnapshot.bind(this, snapshot.id)}>Master</ion-anchor>
-                  </ion-col>
+                      onClick={this.setMasterSnapshot.bind(this, snapshot.id)}>Set as Master</ion-anchor>
+                  </td>
                 ): null)}
 
                 {(this.isAdmin ? (
-                  <ion-col>
+                  <td>
                     <ion-anchor
                       tappable
                       hidden={this.appData.masterSnapshotId === snapshot.id}
                       onClick={this.deleteSnapshot.bind(this, snapshot.id)} color="danger">Delete</ion-anchor>
-                  </ion-col>
+                  </td>
                 ): null)}
 
-              </ion-row>
+              </tr>
             );
           })}
 
-        </ion-grid>
+        </table>
 
       </ion-content>
     ];

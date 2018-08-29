@@ -1,5 +1,1 @@
-// import { setupConfig } from '@ionic/core';
-
-// setupConfig({
-//   mode: 'ios'
-// });
+import '../components/snapshot-compare/resemble'

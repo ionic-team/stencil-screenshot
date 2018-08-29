@@ -12,9 +12,9 @@ export class AppRoot {
     return (
       <ion-app>
         <ion-router useHash={false}>
-          <ion-route url="/" component="screenshot-list" />
-          <ion-route url="/:id/" component="screenshot-detail" />
-          <ion-route url="/:a/:b/" component="screenshot-compare" />
+          <ion-route url="/" component="snapshot-list" />
+          <ion-route url="/:snapshotId/" component="snapshot-detail" />
+          <ion-route url="/:a/:b/" component="snapshot-compare" />
         </ion-router>
         <ion-nav />
       </ion-app>

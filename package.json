@@ -16,7 +16,8 @@
     "@stencil/core": "0.12.1"
   },
   "devDependencies": {
-    "rimraf": "^2.6.2"
+    "resemblejs": "2.10.3",
+    "rimraf": "2.6.2"
   },
   "author": "Ionic Team",
   "license": "MIT"

@@ -1,10 +1,6 @@
 
-export function setMasterSnapshot(snapshotId: string) {
-  console.log('setMasterSnapshot', snapshotId);
-  return Promise.resolve();
-}
+export function formatDate(timestamp: number) {
+  var d = new Date(timestamp);
 
-export function deleteSnapshot(snapshotId: string) {
-  console.log('deleteSnapshot', snapshotId);
-  return Promise.resolve();
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}`;
 }
