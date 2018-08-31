@@ -1,0 +1,50 @@
+version: 2
+
+aliases:
+  - &restore-cache-deps
+      key: dependency-cache-{{ checksum "package.json" }}
+
+  - &save-cache-deps
+      key: dependency-cache-{{ checksum "package.json" }}
+      paths:
+        - node_modules
+
+defaults: &defaults
+  working_directory: /tmp/workspace
+  docker:
+    - image: circleci/python:3-node
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache: *restore-cache-deps
+      - run: npm install
+      - save_cache: *save-cache-deps
+      - run: npm run build
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - "*"
+  deploy:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Install AWS CLI
+          command: sudo pip install awscli
+      - run:
+          name: Deploy to S3
+          command: aws s3 sync www s3://screenshot.ionicframework.com
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build

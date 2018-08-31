@@ -8,7 +8,6 @@
   ],
   "scripts": {
     "build": "stencil build && npm run remove.svgs",
-    "deploy": "echo deploy-magic",
     "remove.svgs": "rimraf ../stencil/screenshot/app/build/app/svg",
     "start": "stencil build --dev --watch --serve"
   },
