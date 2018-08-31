@@ -7,8 +7,7 @@ export const config: Config = {
     {
       type: 'www',
       dir: '../stencil/screenshot/app/',
-      serviceWorker: null,
-      empty: false
+      serviceWorker: null
     }
   ],
   globalScript: 'src/global/app.ts',

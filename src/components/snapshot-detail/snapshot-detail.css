@@ -12,6 +12,14 @@ table.snapshot-detail {
   vertical-align: top;
 }
 
+.snapshot-detail .screenshot {
+  text-align: center;
+}
+
+.snapshot-detail img {
+  max-width: unset;
+}
+
 .snapshot-detail .id {
   margin-top: 0;
   white-space: nowrap;

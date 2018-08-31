@@ -1,6 +1,6 @@
-import * as d from '../../declarations';
 import { Component, Prop } from '@stencil/core';
-import { formatDate } from '../../helpers/data';
+import { E2ESnapshot } from '@stencil/core/screenshot';
+import { formatCommitUrl, formatDate } from '../../helpers/format';
 
 
 @Component({
@@ -10,7 +10,7 @@ import { formatDate } from '../../helpers/data';
 export class SnapshotDetail {
 
   @Prop() snapshotId: string;
-  snapshot: d.SnapshotData = null;
+  snapshot: E2ESnapshot = null;
 
   async componentWillLoad() {
     try {
@@ -34,13 +34,15 @@ export class SnapshotDetail {
       </ion-header>,
       <ion-content padding>
 
-        {this.snapshot.desc && this.snapshot.commitUrl ? (
+        {this.snapshot.msg && this.snapshot.repoUrl ? (
           <p>
-            <a href={this.snapshot.commitUrl}>{this.snapshot.desc}</a>
+            <a href={formatCommitUrl(this.snapshot.repoUrl, this.snapshot.id)} target="_blank">
+              {this.snapshot.msg}
+            </a>
           </p>
-        ) : this.snapshot.desc ? (
+        ) : this.snapshot.msg ? (
           <p>
-            {this.snapshot.desc}
+            {this.snapshot.msg}
           </p>
         ): null}
 
@@ -48,19 +50,32 @@ export class SnapshotDetail {
 
         <table class="snapshot-detail">
 
-        {this.snapshot.screenshots.map(screenshot => {
-          return (
-            <tr>
-              <td>
-                <img src={`/screenshot/images/${screenshot.image}`}/>
-              </td>
-              <td>
-                <p class="id"><strong>ID:</strong> {screenshot.id}</p>
-                <p class="desc">{screenshot.desc}</p>
-              </td>
-            </tr>
-          )
-        })}
+          {this.snapshot.screenshots.map(screenshot => {
+            return (
+              <tr id={'screenshot-' + screenshot.id}>
+                <td class="screenshot">
+                  <a href={`/screenshot/images/${screenshot.image}`} target="_blank">
+                    <img
+                      src={`/screenshot/images/${screenshot.image}`}
+                      width={screenshot.width}
+                      height={screenshot.height}
+                      title={screenshot.device + ', ' + screenshot.desc}/>
+                  </a>
+                </td>
+                <td>
+                  <p class="id">
+                    <strong>ID:</strong> <a href={'#screenshot-' + screenshot.id}>
+                      {screenshot.id}
+                    </a>
+                  </p>
+                  <p><strong>Description:</strong> {screenshot.desc}</p>
+                  <p><strong>Device:</strong> {screenshot.device}</p>
+                  <p><strong>Size:</strong> {screenshot.width} x {screenshot.height}</p>
+                  <p><strong>Scale Factor:</strong> {screenshot.deviceScaleFactor}</p>
+                </td>
+              </tr>
+            )
+          })}
 
         </table>
       </ion-content>

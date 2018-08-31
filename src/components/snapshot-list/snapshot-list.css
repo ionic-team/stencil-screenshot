@@ -16,3 +16,7 @@ table.snapshot-list {
 .snapshot-list .desc {
   white-space: nowrap;
 }
+
+.snapshot-list .timestamp {
+  white-space: nowrap;
+}

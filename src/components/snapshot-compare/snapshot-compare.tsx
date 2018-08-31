@@ -1,5 +1,5 @@
 import { Component, Prop } from '@stencil/core';
-import * as d from '../../declarations';
+import { E2ESnapshot, E2EData } from '@stencil/core/screenshot';
 
 
 @Component({
@@ -21,13 +21,16 @@ export class SnapshotCompare {
       const fetchB = fetch(`/screenshot/data/snapshots/${this.b}.json`);
       const fetchData = fetch(`/screenshot/data/data.json`);
 
+      localStorage.setItem('screenshot_a', this.a);
+      localStorage.setItem('screenshot_b', this.b);
+
       const rspA = await fetchA;
       const rspB = await fetchB;
       const rspData = await fetchData;
 
-      const snapshotA = await rspA.json() as d.SnapshotData;
-      const snapshotB = await rspB.json() as d.SnapshotData;
-      const data = await rspData.json() as d.AppData;
+      const snapshotA = await rspA.json() as E2ESnapshot;
+      const snapshotB = await rspB.json() as E2ESnapshot;
+      const data = await rspData.json() as E2EData;
       this.masterSnapshotId = data.masterSnapshotId;
 
       this.screenshotDiffs = snapshotA.screenshots.map(screenshotA => {
@@ -82,40 +85,56 @@ export class SnapshotCompare {
         </ion-toolbar>
       </ion-header>,
       <ion-content padding>
-        <table class="snapshot-compare">
 
-          <tr>
-            <td>
-              <ion-anchor href={'/' + this.a}>{this.a} {this.a === this.masterSnapshotId ? ' (master)' : ''}</ion-anchor>
-            </td>
-            <td>
-              <ion-anchor href={'/' + this.b}>{this.b} {this.b === this.masterSnapshotId ? ' (master)' : ''}</ion-anchor>
-            </td>
-            <td>Diff</td>
-            <td>Analysis</td>
-          </tr>
+        {this.screenshotDiffs.length === 0 ? (
+          <div class="snapshot-compare-identical">
+            <p>
+              {this.a} and {this.b} are identical
+            </p>
+            <p>
+              <ion-button href="/">View All</ion-button>
+            </p>
+          </div>
+        ) : (
+          <table class="snapshot-compare">
+            <tr>
+              <td>
+                <ion-anchor href={'/' + this.a}>{this.a} {this.a === this.masterSnapshotId ? ' (master)' : ''}</ion-anchor>
+              </td>
+              <td>
+                <ion-anchor href={'/' + this.b}>{this.b} {this.b === this.masterSnapshotId ? ' (master)' : ''}</ion-anchor>
+              </td>
+              <td>Diff</td>
+              <td>Analysis</td>
+            </tr>
 
-          {this.screenshotDiffs.map(diff => {
-            return (
-              <tr id={'row-' + diff.id} hidden>
-                <td>
-                  <img src={diff.imageA}/>
-                </td>
-                <td>
-                  <img src={diff.imageB}/>
-                </td>
-                <td>
-                  <img src='' id={'diff-' + diff.id}/>
-                </td>
-                <td>
-                  <p>{diff.desc}</p>
-                  <p><strong>Mismatch</strong>: <span id={'mismatch-' + diff.id}></span>%</p>
-                </td>
-              </tr>
-            );
-          })}
+            {this.screenshotDiffs.map(diff => {
+              return (
+                <tr id={'row-' + diff.id} hidden>
+                  <td>
+                    <a href={diff.imageA} target="_blank">
+                      <img src={diff.imageA}/>
+                    </a>
+                  </td>
+                  <td>
+                    <a href={diff.imageB} target="_blank">
+                      <img src={diff.imageB}/>
+                    </a>
+                  </td>
+                  <td>
+                    <img src='' id={'diff-' + diff.id}/>
+                  </td>
+                  <td>
+                    <p>{diff.desc}</p>
+                    <p><strong>Mismatch</strong>: <span id={'mismatch-' + diff.id}></span>%</p>
+                  </td>
+                </tr>
+              );
+            })}
 
-        </table>
+          </table>
+        )}
+
       </ion-content>
     ];
   }

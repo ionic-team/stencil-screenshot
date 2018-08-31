@@ -1,6 +1,6 @@
 import { Component, State, Prop } from '@stencil/core';
-import * as d from '../../declarations';
-import { formatDate } from '../../helpers/data';
+import { E2EData } from '@stencil/core/screenshot';
+import { formatDate, formatCommitUrl } from '../../helpers/format';
 
 
 @Component({
@@ -9,7 +9,7 @@ import { formatDate } from '../../helpers/data';
 })
 export class SnapshotList {
 
-  @State() appData: d.AppData = { masterSnapshotId: null, snapshots: [] };
+  @State() appData: E2EData = { masterSnapshotId: null, snapshots: [] };
   isAdmin = false;
 
   @State() a: string = null;
@@ -24,8 +24,17 @@ export class SnapshotList {
       const rsp = await fetch(`/screenshot/data/data.json`);
       this.appData = await rsp.json();
 
-      if (this.appData.masterSnapshotId) {
+      const storedA = localStorage.getItem('screenshot_a');
+      if (storedA && this.appData.snapshots.some(s => s.id === storedA)) {
+        this.a = storedA;
+
+      } else if (this.appData.masterSnapshotId) {
         this.a = this.appData.masterSnapshotId;
+      }
+
+      const storedB = localStorage.getItem('screenshot_b');
+      if (storedB && storedB !== this.a && this.appData.snapshots.some(s => s.id === storedB)) {
+        this.b = storedB;
       }
 
     } catch (e) {
@@ -36,7 +45,7 @@ export class SnapshotList {
   private async setMasterSnapshot(snapshotId: string) {
     const alert = await this.alertCtrl.create({
       header: `Set as Master: ${snapshotId}`,
-      message: `Are you sure you want to master snapshot to ${snapshotId}?`,
+      message: `Are you sure you want to set the master snapshot to ${snapshotId}?`,
       buttons: [
         {
           text: `Cancel`,
@@ -125,6 +134,8 @@ export class SnapshotList {
                         this.a = null;
                       } else {
                         this.a = snapshot.id;
+                        localStorage.setItem('screenshot_a', this.a);
+
                         if (this.b === snapshot.id) {
                           this.b = null;
                         }
@@ -141,6 +152,8 @@ export class SnapshotList {
                         this.b = null;
                       } else {
                         this.b = snapshot.id;
+                        localStorage.setItem('screenshot_b', this.b);
+
                         if (this.a === snapshot.id) {
                           this.a = null;
                         }
@@ -155,10 +168,20 @@ export class SnapshotList {
                 </td>
 
                 <td class="desc">
-                  {snapshot.desc}
+                  {snapshot.msg && snapshot.repoUrl ? (
+                    <span>
+                      <a href={formatCommitUrl(snapshot.repoUrl, snapshot.id)} target="_blank">
+                        {snapshot.msg}
+                      </a>
+                    </span>
+                  ) : snapshot.msg ? (
+                    <span>
+                      {snapshot.msg}
+                    </span>
+                  ): null}
                 </td>
 
-                <td>
+                <td class="timestamp">
                   {formatDate(snapshot.timestamp)}
                 </td>
 
