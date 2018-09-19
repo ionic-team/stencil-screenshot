@@ -6,10 +6,8 @@ export const config: Config = {
   outputTargets: [
     {
       type: 'www',
-      dir: '../stencil/screenshot/app/',
-      serviceWorker: null
+      dir: '../stencil/screenshot/compare/',
     }
   ],
-  globalScript: 'src/global/app.ts',
   globalStyle: 'src/global/app.css'
 };

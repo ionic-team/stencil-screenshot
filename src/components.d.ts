@@ -8,6 +8,12 @@ import '@stencil/core';
 
 import '@ionic/core';
 import 'ionicons';
+import {
+  ScreenshotBuild,
+} from '@stencil/core/screenshot';
+import {
+  ScreenshotDiff,
+} from './helpers/screenshot-diff';
 
 
 export namespace Components {
@@ -15,39 +21,43 @@ export namespace Components {
   interface AppRoot {}
   interface AppRootAttributes extends StencilHTMLAttributes {}
 
-  interface SnapshotCompare {
-    'a': string;
-    'b': string;
+  interface LocalCompare {
+    'buildA': ScreenshotBuild;
+    'buildB': ScreenshotBuild;
+    'imagesUrl': string;
+    'jsonpUrl': string;
   }
-  interface SnapshotCompareAttributes extends StencilHTMLAttributes {
-    'a'?: string;
-    'b'?: string;
-  }
-
-  interface SnapshotDetail {
-    'snapshotId': string;
-  }
-  interface SnapshotDetailAttributes extends StencilHTMLAttributes {
-    'snapshotId'?: string;
+  interface LocalCompareAttributes extends StencilHTMLAttributes {
+    'buildA'?: ScreenshotBuild;
+    'buildB'?: ScreenshotBuild;
+    'imagesUrl'?: string;
+    'jsonpUrl'?: string;
   }
 
-  interface SnapshotList {}
-  interface SnapshotListAttributes extends StencilHTMLAttributes {}
+  interface LocalPixelmatch {
+    'diff': ScreenshotDiff;
+  }
+  interface LocalPixelmatchAttributes extends StencilHTMLAttributes {
+    'diff'?: ScreenshotDiff;
+  }
+
+  interface ScreenshotLookup {}
+  interface ScreenshotLookupAttributes extends StencilHTMLAttributes {}
 }
 
 declare global {
   interface StencilElementInterfaces {
     'AppRoot': Components.AppRoot;
-    'SnapshotCompare': Components.SnapshotCompare;
-    'SnapshotDetail': Components.SnapshotDetail;
-    'SnapshotList': Components.SnapshotList;
+    'LocalCompare': Components.LocalCompare;
+    'LocalPixelmatch': Components.LocalPixelmatch;
+    'ScreenshotLookup': Components.ScreenshotLookup;
   }
 
   interface StencilIntrinsicElements {
     'app-root': Components.AppRootAttributes;
-    'snapshot-compare': Components.SnapshotCompareAttributes;
-    'snapshot-detail': Components.SnapshotDetailAttributes;
-    'snapshot-list': Components.SnapshotListAttributes;
+    'local-compare': Components.LocalCompareAttributes;
+    'local-pixelmatch': Components.LocalPixelmatchAttributes;
+    'screenshot-lookup': Components.ScreenshotLookupAttributes;
   }
 
 
@@ -57,36 +67,36 @@ declare global {
     new (): HTMLAppRootElement;
   };
 
-  interface HTMLSnapshotCompareElement extends Components.SnapshotCompare, HTMLStencilElement {}
-  var HTMLSnapshotCompareElement: {
-    prototype: HTMLSnapshotCompareElement;
-    new (): HTMLSnapshotCompareElement;
+  interface HTMLLocalCompareElement extends Components.LocalCompare, HTMLStencilElement {}
+  var HTMLLocalCompareElement: {
+    prototype: HTMLLocalCompareElement;
+    new (): HTMLLocalCompareElement;
   };
 
-  interface HTMLSnapshotDetailElement extends Components.SnapshotDetail, HTMLStencilElement {}
-  var HTMLSnapshotDetailElement: {
-    prototype: HTMLSnapshotDetailElement;
-    new (): HTMLSnapshotDetailElement;
+  interface HTMLLocalPixelmatchElement extends Components.LocalPixelmatch, HTMLStencilElement {}
+  var HTMLLocalPixelmatchElement: {
+    prototype: HTMLLocalPixelmatchElement;
+    new (): HTMLLocalPixelmatchElement;
   };
 
-  interface HTMLSnapshotListElement extends Components.SnapshotList, HTMLStencilElement {}
-  var HTMLSnapshotListElement: {
-    prototype: HTMLSnapshotListElement;
-    new (): HTMLSnapshotListElement;
+  interface HTMLScreenshotLookupElement extends Components.ScreenshotLookup, HTMLStencilElement {}
+  var HTMLScreenshotLookupElement: {
+    prototype: HTMLScreenshotLookupElement;
+    new (): HTMLScreenshotLookupElement;
   };
 
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement
-    'snapshot-compare': HTMLSnapshotCompareElement
-    'snapshot-detail': HTMLSnapshotDetailElement
-    'snapshot-list': HTMLSnapshotListElement
+    'local-compare': HTMLLocalCompareElement
+    'local-pixelmatch': HTMLLocalPixelmatchElement
+    'screenshot-lookup': HTMLScreenshotLookupElement
   }
 
   interface ElementTagNameMap {
     'app-root': HTMLAppRootElement;
-    'snapshot-compare': HTMLSnapshotCompareElement;
-    'snapshot-detail': HTMLSnapshotDetailElement;
-    'snapshot-list': HTMLSnapshotListElement;
+    'local-compare': HTMLLocalCompareElement;
+    'local-pixelmatch': HTMLLocalPixelmatchElement;
+    'screenshot-lookup': HTMLScreenshotLookupElement;
   }
 
 

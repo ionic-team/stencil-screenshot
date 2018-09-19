@@ -3,20 +3,20 @@
   background: #efffe6;
 }
 
-table.snapshot-list {
+table.screenshot-lookup {
   margin: 8px;
   width: 100%;
   font-size: 12px;
 }
 
-.snapshot-list td {
+.screenshot-lookup td {
   padding: 4px 8px;
 }
 
-.snapshot-list .desc {
+.screenshot-lookup .desc {
   white-space: nowrap;
 }
 
-.snapshot-list .timestamp {
+.screenshot-lookup .timestamp {
   white-space: nowrap;
 }
