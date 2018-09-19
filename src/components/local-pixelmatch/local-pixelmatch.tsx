@@ -16,11 +16,11 @@ export class LocalPixelmatch {
   componentDidLoad() {
     const diff = this.diff;
 
-    const imageA = new Image(diff.physicalWidth, diff.physicalHeight);
+    const imageA = new Image(diff.naturalWidth, diff.naturalHeight);
     imageA.style.width = `${diff.width}px`;
     imageA.style.height = `${diff.height}px`;
 
-    const imageB = new Image(diff.physicalWidth, diff.physicalHeight);
+    const imageB = new Image(diff.naturalWidth, diff.naturalHeight);
     imageB.style.width = `${diff.width}px`;
     imageB.style.height = `${diff.height}px`;
 
@@ -73,12 +73,12 @@ export class LocalPixelmatch {
     }
     this.initialized = true;
 
-    diff.mismatchedPixels = await getMismatch(imageA, imageB, this.canvasDiff, diff.physicalWidth, diff.physicalHeight);
+    diff.mismatchedPixels = await getMismatch(imageA, imageB, this.canvasDiff, diff.naturalWidth, diff.naturalHeight);
 
     const spanMismatch = document.getElementById(`mismatch-pixels-${diff.id}`) as HTMLSpanElement;
     spanMismatch.textContent = diff.mismatchedPixels + '';
 
-    diff.mismatchedRatio = (diff.mismatchedPixels / (diff.physicalWidth * diff.physicalHeight));
+    diff.mismatchedRatio = (diff.mismatchedPixels / (diff.naturalWidth * diff.naturalHeight));
 
     const spanMismatchRatio = document.getElementById(`mismatch-ratio-${diff.id}`) as HTMLSpanElement;
     spanMismatchRatio.textContent = diff.mismatchedRatio.toFixed(4);
@@ -94,7 +94,7 @@ export class LocalPixelmatch {
     }
 
     return [
-      <canvas ref={elm => this.canvasDiff = elm} width={diff.physicalWidth} height={diff.physicalHeight} style={{ width: diff.width + 'px', height: diff.height + 'px' }} />
+      <canvas ref={elm => this.canvasDiff = elm} width={diff.naturalWidth} height={diff.naturalHeight} style={{ width: diff.width + 'px', height: diff.height + 'px' }} />
     ];
   }
 }

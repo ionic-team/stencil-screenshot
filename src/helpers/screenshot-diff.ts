@@ -17,8 +17,8 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
       width: screenshotA.width,
       height: screenshotA.height,
       deviceScaleFactor: screenshotA.deviceScaleFactor,
-      physicalWidth: screenshotA.physicalWidth,
-      physicalHeight: screenshotA.physicalHeight,
+      naturalWidth: screenshotA.naturalWidth,
+      naturalHeight: screenshotA.naturalHeight,
       device: screenshotA.device,
       userAgent: screenshotA.userAgent
     } as ScreenshotDiff
@@ -46,8 +46,8 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
         width: screenshotB.width,
         height: screenshotB.height,
         deviceScaleFactor: screenshotB.deviceScaleFactor,
-        physicalWidth: screenshotB.physicalWidth,
-        physicalHeight: screenshotB.physicalHeight,
+        naturalWidth: screenshotB.naturalWidth,
+        naturalHeight: screenshotB.naturalHeight,
         device: screenshotB.device,
         userAgent: screenshotB.userAgent
       } as ScreenshotDiff
@@ -85,8 +85,8 @@ export interface ScreenshotDiff {
   mismatchedRatio: number;
   width: number;
   height: number;
-  physicalWidth: number;
-  physicalHeight: number;
+  naturalWidth: number;
+  naturalHeight: number;
   device: string;
   userAgent: string;
   deviceScaleFactor: number;
