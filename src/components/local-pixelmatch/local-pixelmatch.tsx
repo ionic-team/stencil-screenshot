@@ -1,6 +1,7 @@
 import { Component, Prop } from '@stencil/core';
 import { ScreenshotDiff } from '../../helpers/screenshot-diff';
 import { getMismatch } from '../../helpers/pixelmatch';
+import { setMismatchedPixels } from '../../helpers/local-cache';
 
 
 @Component({
@@ -24,45 +25,51 @@ export class LocalPixelmatch {
     imageB.style.width = `${diff.width}px`;
     imageB.style.height = `${diff.height}px`;
 
-    imageA.onload = () => {
-      const link = document.getElementById(`link-a-${diff.id}`);
-      if (link) {
-        link.appendChild(imageA);
-        this.pixelmatch(imageA, imageB);
-      }
-      imageA.onload = null;
-    };
+    if (diff.imageA != null) {
 
-    imageB.onload = () => {
-      const link = document.getElementById(`link-b-${diff.id}`);
-      if (link) {
-        link.appendChild(imageB);
-        this.pixelmatch(imageA, imageB);
-      }
-      imageB.onload = null;
-    };
+      imageA.onload = () => {
+        const link = document.getElementById(`link-a-${diff.id}`);
+        if (link) {
+          link.appendChild(imageA);
+          this.pixelmatch(imageA, imageB);
+        }
+        imageA.onload = null;
+      };
 
-    pendingScreenshotLoads.push({
-      imageName: diff.imageA,
-      callback: (dataUri) => {
-        imageA.src = dataUri;
-      }
-    });
+      pendingScreenshotLoads.push({
+        imageName: diff.imageA,
+        callback: (dataUri) => {
+          imageA.src = dataUri;
+        }
+      });
 
-    pendingScreenshotLoads.push({
-      imageName: diff.imageB,
-      callback: (dataUri) => {
-        imageB.src = dataUri;
-      }
-    });
+      const scriptA = document.createElement('script');
+      scriptA.src = diff.jsonpUrlA;
+      document.head.appendChild(scriptA);
+    }
 
-    const scriptA = document.createElement('script');
-    scriptA.src = diff.jsonpUrlA;
-    document.head.appendChild(scriptA);
+    if (diff.imageB != null) {
 
-    const scriptB = document.createElement('script');
-    scriptB.src = diff.jsonpUrlB;
-    document.head.appendChild(scriptB);
+      imageB.onload = () => {
+        const link = document.getElementById(`link-b-${diff.id}`);
+        if (link) {
+          link.appendChild(imageB);
+          this.pixelmatch(imageA, imageB);
+        }
+        imageB.onload = null;
+      };
+
+      pendingScreenshotLoads.push({
+        imageName: diff.imageB,
+        callback: (dataUri) => {
+          imageB.src = dataUri;
+        }
+      });
+
+      const scriptB = document.createElement('script');
+      scriptB.src = diff.jsonpUrlB;
+      document.head.appendChild(scriptB);
+    }
   }
 
   async pixelmatch(imageA: HTMLImageElement, imageB: HTMLImageElement) {
@@ -82,6 +89,8 @@ export class LocalPixelmatch {
 
     const spanMismatchRatio = document.getElementById(`mismatch-ratio-${diff.id}`) as HTMLSpanElement;
     spanMismatchRatio.textContent = diff.mismatchedRatio.toFixed(4);
+
+    setMismatchedPixels(diff.imageA, diff.imageB, diff.mismatchedPixels);
   }
 
   render() {

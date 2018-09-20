@@ -1,4 +1,5 @@
 import { ScreenshotBuild } from '@stencil/core/screenshot';
+import { getMismatchedPixels } from './local-cache';
 
 
 export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, imagesUrl: string, jsonpUrl: string) {
@@ -64,6 +65,16 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
       return;
     }
 
+    const cachedMismatchedPixels = getMismatchedPixels(diff.imageA, diff.imageB);
+    if (typeof cachedMismatchedPixels === 'number') {
+      diff.mismatchedPixels = cachedMismatchedPixels;
+      diff.mismatchedRatio = (diff.mismatchedPixels / (diff.naturalWidth * diff.naturalHeight));
+
+      if (diff.mismatchedPixels === 0) {
+        diff.identical = true;
+        return;
+      }
+    }
   });
 
   return screenshotDiffs;
