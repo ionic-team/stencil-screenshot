@@ -4,7 +4,10 @@ export function getMismatchedPixels(imageA: string, imageB: string) {
   const cacheKey = getCacheKey(imageA, imageB);
   const mismatchedPixels = localStorage.getItem(cacheKey);
   if (typeof mismatchedPixels === 'string') {
-    return parseInt(mismatchedPixels, 10);
+    const num = parseInt(mismatchedPixels, 10);
+    if (!isNaN(num)) {
+      return num;
+    }
   }
   return null;
 }

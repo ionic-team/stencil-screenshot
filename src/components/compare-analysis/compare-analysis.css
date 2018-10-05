@@ -1,0 +1,57 @@
+
+.test-path {
+  margin-top: 0;
+  padding-top: 0;
+  font-size: 10px;
+  color: var(--analysis-data-color);
+}
+
+dl {
+  padding: 0;
+  margin: 0;
+  font-size: var(--analysis-data-font-size);
+  line-height: 28px;
+}
+
+div {
+  display: flex;
+  width: 240px;
+}
+
+dt {
+  display: inline;
+  flex: 2;
+  font-weight: 500;
+}
+
+dd {
+  display: inline;
+  flex: 1;
+  color: var(--analysis-data-color);
+}
+
+.desc {
+  display: block;
+}
+
+.desc dt {
+  display: block;
+}
+
+.desc dd {
+  display: block;
+  margin: 0;
+}
+
+p {
+  padding-top: 14px;
+  font-size: var(--analysis-data-font-size);
+}
+
+a {
+  color: var(--analysis-data-color);
+}
+
+a:hover {
+  text-decoration: none;
+}

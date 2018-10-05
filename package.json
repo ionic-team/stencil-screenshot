@@ -2,15 +2,14 @@
   "name": "@stencil/screenshot",
   "private": true,
   "version": "0.0.1",
-  "description": "Stencil Screenshot Comparison App",
+  "description": "Stencil Screenshot Visual Diff App",
   "files": [
     "dist/"
   ],
   "scripts": {
-    "build": "stencil build --dev --es5 && npm run remove.svgs",
-    "deploy": "echo deploy-magic",
+    "build": "stencil build --es5 && npm run remove.svgs",
     "remove.svgs": "rimraf ../stencil/screenshot/app/build/app/svg",
-    "start": "stencil build --dev --watch --serve",
+    "start": "stencil build --dev --es5 --watch --serve",
     "test": "stencil test --spec",
     "test.watch": "stencil test --spec --watch"
   },
@@ -20,6 +19,7 @@
     "pixelmatch": "^4.0.2"
   },
   "devDependencies": {
+    "@stencil/router": "^0.3.0",
     "@types/jest": "23.3.1",
     "@types/pixelmatch": "^4.0.0",
     "jest": "23.5.0",

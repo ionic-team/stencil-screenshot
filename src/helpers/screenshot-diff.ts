@@ -1,18 +1,22 @@
+import * as d from './declarations';
 import { ScreenshotBuild } from '@stencil/core/screenshot';
-import { getMismatchedPixels } from './local-cache';
+import { getMismatchedPixels } from './mismatch-cache';
 
 
 export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, imagesUrl: string, jsonpUrl: string) {
   const screenshotDiffs = a.screenshots.map(screenshotA => {
-    return {
+    const diff: d.ScreenshotDiff = {
       id: screenshotA.id,
       desc: screenshotA.desc,
+      testPath: screenshotA.testPath,
       imageA: screenshotA.image,
       imageUrlA: `${imagesUrl}${screenshotA.image}`,
       jsonpUrlA: `${jsonpUrl}screenshot_${screenshotA.image}.js`,
       imageB: null,
       imageUrlB: null,
       jsonpUrlB: null,
+      imageDiff: null,
+      identical: false,
       mismatchedPixels: null,
       mismatchedRatio: null,
       width: screenshotA.width,
@@ -20,13 +24,13 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
       deviceScaleFactor: screenshotA.deviceScaleFactor,
       naturalWidth: screenshotA.naturalWidth,
       naturalHeight: screenshotA.naturalHeight,
-      device: screenshotA.device,
-      userAgent: screenshotA.userAgent
-    } as ScreenshotDiff
+      device: screenshotA.device || screenshotA.userAgent
+    };
+    return diff;
   });
 
   b.screenshots.forEach(screenshotB => {
-    let diff = screenshotDiffs.find(s => s.id === screenshotB.id);
+    let diff = screenshotDiffs.find(s => s.id === screenshotB.id) as d.ScreenshotDiff;
     if (diff) {
       diff.imageB = screenshotB.image;
       diff.imageUrlB = `${imagesUrl}${screenshotB.image}`;
@@ -36,12 +40,15 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
       diff = {
         id: screenshotB.id,
         desc: screenshotB.desc,
+        testPath: screenshotB.testPath,
         imageA: null,
         imageUrlA: null,
         jsonpUrlA: null,
         imageB: screenshotB.image,
         imageUrlB: `${imagesUrl}${screenshotB.image}`,
         jsonpUrlB: `${jsonpUrl}screenshot_${screenshotB.image}.js`,
+        imageDiff: null,
+        identical: false,
         mismatchedPixels: null,
         mismatchedRatio: null,
         width: screenshotB.width,
@@ -49,9 +56,8 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
         deviceScaleFactor: screenshotB.deviceScaleFactor,
         naturalWidth: screenshotB.naturalWidth,
         naturalHeight: screenshotB.naturalHeight,
-        device: screenshotB.device,
-        userAgent: screenshotB.userAgent
-      } as ScreenshotDiff
+        device: screenshotB.device || screenshotB.userAgent
+      };
       screenshotDiffs.push(diff);
     }
   });
@@ -78,28 +84,4 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
   });
 
   return screenshotDiffs;
-}
-
-
-
-export interface ScreenshotDiff {
-  id: string;
-  desc: string;
-  imageA: string;
-  imageUrlA: string;
-  jsonpUrlA: string;
-  imageB: string;
-  imageUrlB: string;
-  jsonpUrlB: string;
-  imageDiff: string;
-  mismatchedPixels: number;
-  mismatchedRatio: number;
-  width: number;
-  height: number;
-  naturalWidth: number;
-  naturalHeight: number;
-  device: string;
-  userAgent: string;
-  deviceScaleFactor: number;
-  identical: boolean;
 }

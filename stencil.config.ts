@@ -7,6 +7,7 @@ export const config: Config = {
     {
       type: 'www',
       dir: '../stencil/screenshot/compare/',
+      serviceWorker: null
     }
   ],
   globalStyle: 'src/global/app.css'

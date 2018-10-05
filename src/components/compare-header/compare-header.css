@@ -1,0 +1,45 @@
+
+:host {
+  background: white;
+}
+
+nav {
+  padding: 4px 4px;
+}
+
+nav a {
+  font-size: 14px;
+  text-decoration: none;
+  color: var(--breadcrumb-color);
+  display: inline-block;
+  padding: 0 4px 0 4px;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+header {
+  display: flex;
+  padding: 8px;
+}
+
+img {
+  width: 174px;
+  height: 32px;
+}
+
+.logo {
+  flex: 1;
+  padding: 7px;
+}
+
+compare-filter {
+  flex: 1;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+}

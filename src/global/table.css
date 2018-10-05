@@ -1,0 +1,36 @@
+
+compare-table {
+  display: table;
+  width: 100%;
+}
+
+compare-thead {
+  display: table-header-group;
+  font-weight: 500;
+  font-size: 12px;
+  background: white;
+  box-shadow: var(--header-box-shadow);
+}
+
+compare-tbody {
+  display: table-row-group;
+}
+
+compare-tbody compare-cell {
+  padding-top: 12px;
+}
+
+compare-row,
+compare-header-row {
+  display: table-row;
+}
+
+compare-row[hidden] {
+  display: none;
+}
+
+compare-cell {
+  display: table-cell;
+  vertical-align: top;
+  padding: 3px 10px;
+}

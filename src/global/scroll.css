@@ -1,0 +1,30 @@
+
+body {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+}
+
+local-compare {
+  position: absolute;
+  display: block;
+  top: 0px;
+  width: 100%;
+  height: 100vh;
+}
+
+compare-header {
+  position: absolute;
+  display: block;
+  top: 0;
+  width: 100%;
+  height: 65px;
+}
+
+.scroll-view {
+  position: absolute;
+  height: 100vh;
+  overflow: scroll;
+  top: 65px;
+  width: 100%;
+}

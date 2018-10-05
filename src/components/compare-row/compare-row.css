@@ -1,0 +1,6 @@
+
+compare-row img,
+compare-row canvas {
+  box-shadow: var(--screenshot-box-shadow);
+  border-radius: var(--screenshot-border-radius);
+}

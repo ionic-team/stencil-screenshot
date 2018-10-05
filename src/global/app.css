@@ -1,11 +1,11 @@
 /* Document Level Styles */
 
-/** Basic CSS for Ionic Apps */
+/** Basic CSS for Ionic Apps
 @import "~@ionic/core/css/structure.css";
 @import "~@ionic/core/css/core.css";
+*/
 
-:root {
-  --border: #b1b1b1;
-}
-
-@import './compare-table.css';
+@import './variables.css';
+@import './body.css';
+@import './table.css';
+@import './scroll.css';
