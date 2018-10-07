@@ -1,5 +1,5 @@
 import { Component, Prop } from '@stencil/core';
-import { updateHash } from '../../helpers/filter-data';
+import { ScreenshotDiff } from '../../helpers/declarations';
 
 
 @Component({
@@ -9,62 +9,67 @@ import { updateHash } from '../../helpers/filter-data';
 })
 export class CompareAnalysis {
 
-  @Prop() diffId: string;
-  @Prop() mismatchedPixels: number = null;
-  @Prop() mismatchedRatio: number = null;
-  @Prop() device: string;
-  @Prop() width: number;
-  @Prop() height: number;
-  @Prop() deviceScaleFactor: number;
-  @Prop() desc: string;
-  @Prop() testPath: string;
+  @Prop() diff: ScreenshotDiff;
 
   navToId(ev: UIEvent) {
     ev.preventDefault();
     ev.stopPropagation();
 
-    updateHash({
-      diff: this.diffId
-    });
+    // updateHash({
+    //   diff: this.diffId
+    // });
   }
 
   render() {
+    const diff = this.diff;
+    const hasCalculated = typeof diff.mismatchedPixels === 'number';
+    const mismatchedRatio = hasCalculated ? (diff.mismatchedPixels / ((diff.width * diff.deviceScaleFactor) * (diff.height * diff.deviceScaleFactor))) : null;
+
+    let mismatchClass = '';
+    if (hasCalculated) {
+      if (diff.mismatchedPixels > 0) {
+        mismatchClass = 'has-mismatch';
+      }
+    } else {
+      mismatchClass = 'not-calculated';
+    }
+
     return [
       <p class="test-path">
-        {this.testPath}
+        {diff.testPath}
       </p>,
       <dl>
         <div>
           <dt>Diff</dt>
-          <dd><a href={'#diff-' + this.diffId} onClick={this.navToId.bind(this)}>{this.diffId}</a></dd>
+          <dd><a href={'#diff-' + diff.id} onClick={this.navToId.bind(this)}>{diff.id}</a></dd>
         </div>
-        <div>
+        <div class={mismatchClass}>
           <dt>Mismatched Pixels</dt>
-          <dd>{typeof this.mismatchedPixels === 'number' ? this.mismatchedPixels : '--'}</dd>
+          <dd>{hasCalculated ? diff.mismatchedPixels : '--'}</dd>
         </div>
-        <div>
+        <div class={mismatchClass}>
           <dt>Mismatched Ratio</dt>
-          <dd>{typeof this.mismatchedRatio === 'number' ? this.mismatchedRatio.toFixed(4) : '--'}</dd>
+          <dd>{hasCalculated ? mismatchedRatio.toFixed(4) : '--'}</dd>
         </div>
         <div>
           <dt>Device</dt>
-          <dd>{this.device}</dd>
+          <dd>{diff.device}</dd>
         </div>
         <div>
           <dt>Width</dt>
-          <dd>{this.width}</dd>
+          <dd>{diff.width}</dd>
         </div>
         <div>
           <dt>Height</dt>
-          <dd>{this.height}</dd>
+          <dd>{diff.height}</dd>
         </div>
         <div>
           <dt>Device Scale Factor</dt>
-          <dd>{this.deviceScaleFactor}</dd>
+          <dd>{diff.deviceScaleFactor}</dd>
         </div>
         <div class="desc">
           <dt>Description</dt>
-          <dd>{this.desc}</dd>
+          <dd>{diff.desc}</dd>
         </div>
       </dl>
     ];

@@ -13,7 +13,16 @@ import {
   ScreenshotDiff,
 } from './helpers/declarations';
 import {
+  FilterData,
+} from './helpers/filter-data';
+import {
+  EventEmitter,
+} from '@stencil/core';
+import {
   ScreenshotBuild,
+} from '@stencil/core/dist/screenshot';
+import {
+  ScreenshotBuild as ScreenshotBuild2,
 } from '@stencil/core/screenshot';
 
 
@@ -23,67 +32,71 @@ export namespace Components {
   interface AppRootAttributes extends StencilHTMLAttributes {}
 
   interface CompareAnalysis {
-    'desc': string;
-    'device': string;
-    'deviceScaleFactor': number;
-    'diffId': string;
-    'height': number;
-    'mismatchedPixels': number;
-    'mismatchedRatio': number;
-    'testPath': string;
-    'width': number;
+    'diff': ScreenshotDiff;
   }
   interface CompareAnalysisAttributes extends StencilHTMLAttributes {
-    'desc'?: string;
-    'device'?: string;
-    'deviceScaleFactor'?: number;
-    'diffId'?: string;
-    'height'?: number;
-    'mismatchedPixels'?: number;
-    'mismatchedRatio'?: number;
-    'testPath'?: string;
-    'width'?: number;
+    'diff'?: ScreenshotDiff;
   }
 
-  interface CompareFilter {}
-  interface CompareFilterAttributes extends StencilHTMLAttributes {}
+  interface CompareFilter {
+    'diffs': ScreenshotDiff[];
+    'filter': FilterData;
+  }
+  interface CompareFilterAttributes extends StencilHTMLAttributes {
+    'diffs'?: ScreenshotDiff[];
+    'filter'?: FilterData;
+    'onFilterChange'?: (event: CustomEvent<FilterData>) => void;
+  }
 
   interface CompareHeader {
     'appSrcUrl': string;
+    'diffs': ScreenshotDiff[];
+    'filter': FilterData;
     'repo': Repo;
   }
   interface CompareHeaderAttributes extends StencilHTMLAttributes {
     'appSrcUrl'?: string;
+    'diffs'?: ScreenshotDiff[];
+    'filter'?: FilterData;
     'repo'?: Repo;
   }
 
   interface CompareRow {
-    'device': string;
     'diff': ScreenshotDiff;
+    'hidden': boolean;
     'imagesUrl': string;
-    'isComparable': boolean;
-    'mismatchedPixels': number;
-    'runCompare': () => void;
   }
   interface CompareRowAttributes extends StencilHTMLAttributes {
-    'device'?: string;
     'diff'?: ScreenshotDiff;
+    'hidden'?: boolean;
     'imagesUrl'?: string;
-    'isComparable'?: boolean;
-    'mismatchedPixels'?: number;
+    'onCompareLoaded'?: (event: CustomEvent) => void;
   }
 
-  interface LocalCompare {
+  interface CompareThead {
+    'a': ScreenshotBuild;
+    'b': ScreenshotBuild;
+  }
+  interface CompareTheadAttributes extends StencilHTMLAttributes {
+    'a'?: ScreenshotBuild;
+    'b'?: ScreenshotBuild;
+  }
+
+  interface ScreenshotCompare {
     'a': ScreenshotBuild;
     'appSrcUrl': string;
     'b': ScreenshotBuild;
+    'buildIdA': string;
+    'buildIdB': string;
     'imagesUrl': string;
     'jsonpUrl': string;
   }
-  interface LocalCompareAttributes extends StencilHTMLAttributes {
+  interface ScreenshotCompareAttributes extends StencilHTMLAttributes {
     'a'?: ScreenshotBuild;
     'appSrcUrl'?: string;
     'b'?: ScreenshotBuild;
+    'buildIdA'?: string;
+    'buildIdB'?: string;
     'imagesUrl'?: string;
     'jsonpUrl'?: string;
   }
@@ -99,7 +112,8 @@ declare global {
     'CompareFilter': Components.CompareFilter;
     'CompareHeader': Components.CompareHeader;
     'CompareRow': Components.CompareRow;
-    'LocalCompare': Components.LocalCompare;
+    'CompareThead': Components.CompareThead;
+    'ScreenshotCompare': Components.ScreenshotCompare;
     'ScreenshotLookup': Components.ScreenshotLookup;
   }
 
@@ -109,7 +123,8 @@ declare global {
     'compare-filter': Components.CompareFilterAttributes;
     'compare-header': Components.CompareHeaderAttributes;
     'compare-row': Components.CompareRowAttributes;
-    'local-compare': Components.LocalCompareAttributes;
+    'compare-thead': Components.CompareTheadAttributes;
+    'screenshot-compare': Components.ScreenshotCompareAttributes;
     'screenshot-lookup': Components.ScreenshotLookupAttributes;
   }
 
@@ -144,10 +159,16 @@ declare global {
     new (): HTMLCompareRowElement;
   };
 
-  interface HTMLLocalCompareElement extends Components.LocalCompare, HTMLStencilElement {}
-  var HTMLLocalCompareElement: {
-    prototype: HTMLLocalCompareElement;
-    new (): HTMLLocalCompareElement;
+  interface HTMLCompareTheadElement extends Components.CompareThead, HTMLStencilElement {}
+  var HTMLCompareTheadElement: {
+    prototype: HTMLCompareTheadElement;
+    new (): HTMLCompareTheadElement;
+  };
+
+  interface HTMLScreenshotCompareElement extends Components.ScreenshotCompare, HTMLStencilElement {}
+  var HTMLScreenshotCompareElement: {
+    prototype: HTMLScreenshotCompareElement;
+    new (): HTMLScreenshotCompareElement;
   };
 
   interface HTMLScreenshotLookupElement extends Components.ScreenshotLookup, HTMLStencilElement {}
@@ -162,7 +183,8 @@ declare global {
     'compare-filter': HTMLCompareFilterElement
     'compare-header': HTMLCompareHeaderElement
     'compare-row': HTMLCompareRowElement
-    'local-compare': HTMLLocalCompareElement
+    'compare-thead': HTMLCompareTheadElement
+    'screenshot-compare': HTMLScreenshotCompareElement
     'screenshot-lookup': HTMLScreenshotLookupElement
   }
 
@@ -172,7 +194,8 @@ declare global {
     'compare-filter': HTMLCompareFilterElement;
     'compare-header': HTMLCompareHeaderElement;
     'compare-row': HTMLCompareRowElement;
-    'local-compare': HTMLLocalCompareElement;
+    'compare-thead': HTMLCompareTheadElement;
+    'screenshot-compare': HTMLScreenshotCompareElement;
     'screenshot-lookup': HTMLScreenshotLookupElement;
   }
 

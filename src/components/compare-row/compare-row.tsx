@@ -1,9 +1,8 @@
-import { Component, Element, Prop, Method } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Prop, State } from '@stencil/core';
 import { ScreenshotDiff } from '../../helpers/declarations';
 import { setMismatchedPixels } from '../../helpers/mismatch-cache';
 import { getMismatch } from '../../helpers/pixelmatch';
 import { loadJsonpDataUri } from '../../helpers/image-store';
-import { runFilters } from '../../helpers/filter-data';
 
 
 @Component({
@@ -14,58 +13,67 @@ export class CompareRow {
 
   @Prop() imagesUrl: string;
   @Prop() diff: ScreenshotDiff;
-  @Prop({ mutable: true }) mismatchedPixels: number = null;
-  @Prop({ mutable: true }) isComparable = false;
-  @Prop({ mutable: true }) device: string;
+  @Prop({ reflectToAttr: true }) hidden: boolean;
+  @Event() compareLoaded: EventEmitter;
   @Element() elm: HTMLElement;
 
-  imagesLoaded = new Set();
+  @State() imageASrc = '';
+  @State() imageBSrc = '';
+
+  @State() imageAClass: string;
+  @State() imageBClass: string;
+  @State() canvasClass: string;
+
   imageA: HTMLImageElement;
   imageB: HTMLImageElement;
+
+  imagesLoaded = new Set();
   isImageALoaded = false;
   isImageBLoaded = false;
   canvas: HTMLCanvasElement;
-  isCanvasLoaded = false;
-  analysis: HTMLCompareAnalysisElement;
-  initialized = false;
-  isComparing = false;
-  mismatchedRatio: number = null;
-  hasRendered = false;
+  initializeCalculateMismatch = false;
+  hasCalculatedMismatch = false;
 
   componentWillLoad() {
-    this.mismatchedPixels = this.diff.mismatchedPixels;
-    this.mismatchedRatio = this.diff.mismatchedRatio;
-    this.isComparable = this.diff.imageA != null && this.diff.imageB != null;
-    this.device = this.diff.device;
+    this.loadScreenshots();
   }
 
-  @Method()
-  runCompare() {
-    if (this.diff.identical || this.initialized) {
+  componentWillUpdate() {
+    this.loadScreenshots();
+  }
+
+  loadScreenshots() {
+    if (this.hidden) {
       return;
     }
-    this.initialized = true;
 
-    if ((window as any).requestIdleCallback) {
-      (window as any).requestIdleCallback(this.loadImages.bind(this));
-    } else {
-      window.requestAnimationFrame(this.loadImages.bind(this));
+    if (this.diff.identical) {
+      this.imageASrc = this.imagesUrl + this.diff.imageA;
+      this.imageBSrc = this.imagesUrl + this.diff.imageA;
+      return;
     }
-  }
 
-  loadImages() {
+    if (this.initializeCalculateMismatch) {
+      return;
+    }
+
+    this.imageAClass = 'is-loading';
+    this.imageBClass = 'is-loading';
+    this.canvasClass = 'is-loading';
+    this.initializeCalculateMismatch = true;
+
     if (this.diff.imageA != null) {
       loadJsonpDataUri(this.diff.imageA, this.diff.jsonpUrlA, dataUri => {
-        this.imageA.src = dataUri;
-        this.imageA.style.visibility = '';
+        this.imageASrc = dataUri;
+        this.imageAClass = 'has-loaded';
         this.isImageALoaded = true;
       });
     }
 
     if (this.diff.imageB != null) {
       loadJsonpDataUri(this.diff.imageB, this.diff.jsonpUrlB, dataUri => {
-        this.imageB.src = dataUri;
-        this.imageB.style.visibility = '';
+        this.imageBSrc = dataUri;
+        this.imageBClass = 'has-loaded';
         this.isImageBLoaded = true;
       });
     }
@@ -74,84 +82,71 @@ export class CompareRow {
   async compareImages() {
     const diff = this.diff;
 
-    if (!this.isImageALoaded || !this.isImageBLoaded || this.isComparing || this.isCanvasLoaded) {
+    if (!this.isImageALoaded || !this.isImageBLoaded || this.hasCalculatedMismatch) {
       return;
     }
-    this.isComparing = true;
+    this.hasCalculatedMismatch = true;
 
-    this.mismatchedPixels = await getMismatch(this.imageA, this.imageB, this.canvas, diff.naturalWidth, diff.naturalHeight);
+    diff.mismatchedPixels = await getMismatch(
+      this.imageA,
+      this.imageB,
+      this.canvas,
+      Math.round(diff.width * diff.deviceScaleFactor),
+      Math.round(diff.height * diff.deviceScaleFactor)
+    );
 
-    this.canvas.style.visibility = '';
-    this.isCanvasLoaded = true;
-
-    this.mismatchedRatio = (diff.mismatchedPixels / (diff.naturalWidth * diff.naturalHeight));
-
-    if (this.analysis) {
-      this.analysis.mismatchedPixels = this.mismatchedPixels;
-      this.analysis.mismatchedRatio = this.mismatchedRatio;
-    }
+    this.canvasClass = 'has-loaded';
 
     setMismatchedPixels(diff.imageA, diff.imageB, diff.mismatchedPixels);
 
-    runFilters();
+    this.compareLoaded.emit();
   }
 
   render() {
-    if (this.hasRendered) {
-      return;
-    }
-    this.hasRendered = true;
-
     const diff = this.diff;
     const style = {
       width: diff.width + 'px',
-      height: diff.height + 'px',
-      visibility: this.diff.identical ? '' : 'hidden'
+      height: diff.height + 'px'
     };
 
     return [
       <compare-cell>
         <img
-          src={this.diff.identical ? (this.imagesUrl + diff.imageA) : ''}
+          src={this.imageASrc}
+          class={this.imageAClass}
           style={style}
           onLoad={this.diff.identical ? null : this.compareImages.bind(this)}
-          ref={(elm) => this.imageA = elm}/>
+          ref={elm => this.imageA = elm}
+        />
       </compare-cell>,
 
       <compare-cell>
         <img
-          src={this.diff.identical ? (this.imagesUrl + diff.imageA) : ''}
+          src={this.imageBSrc}
+          class={this.imageBClass}
           style={style}
           onLoad={this.diff.identical ? null : this.compareImages.bind(this)}
-          ref={(elm) => this.imageB = elm}/>
+          ref={elm => this.imageB = elm}
+        />
       </compare-cell>,
 
       <compare-cell>
         {this.diff.identical ? (
           <img
             style={style}
-            src={this.imagesUrl + diff.imageA}/>
+            src={this.imageASrc}/>
         ) : (
           <canvas
-            width={diff.naturalWidth}
-            height={diff.naturalHeight}
+            width={Math.round(diff.width * diff.deviceScaleFactor)}
+            height={Math.round(diff.height * diff.deviceScaleFactor)}
+            class={this.canvasClass}
             style={style}
             ref={(elm) => this.canvas = elm}/>
         )}
       </compare-cell>,
 
       <compare-cell>
-        <compare-analysis
-          diffId={this.diff.id}
-          mismatchedPixels={this.mismatchedPixels}
-          mismatchedRatio={this.mismatchedRatio}
-          device={this.diff.device}
-          width={this.diff.width}
-          height={this.diff.height}
-          deviceScaleFactor={this.diff.deviceScaleFactor}
-          desc={this.diff.desc}
-          testPath={this.diff.testPath}
-          ref={elm => this.analysis = elm as any}/>
+        <compare-analysis diff={this.diff}/>
       </compare-cell>
     ];
   }

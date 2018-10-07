@@ -1,7 +1,51 @@
+import { ScreenshotDiff } from "./declarations";
 
 
-function getFilterData() {
-  const filterData: FilterData = {};
+export function filterDiffs(filter: FilterData, diffs: ScreenshotDiff[]) {
+  diffs = diffs.map(diff => {
+    diff = Object.assign({}, diff);
+    return filterDiff(filter, diff);
+
+  }).sort((a, b) => {
+    if (a.mismatchedPixels > b.mismatchedPixels) return -1;
+    if (a.mismatchedPixels < b.mismatchedPixels) return 1;
+
+    if (a.desc.toLowerCase() < b.desc.toLowerCase()) return -1;
+    if (a.desc.toLowerCase() > b.desc.toLowerCase()) return 1;
+
+    if (a.device.toLowerCase() < b.device.toLowerCase()) return -1;
+    if (a.device.toLowerCase() > b.device.toLowerCase()) return 1;
+
+    return 0;
+  });
+
+
+  return diffs;
+}
+
+
+function filterDiff(filter: FilterData, diff: ScreenshotDiff) {
+  const matchesDevice = (!filter.device || filter.device === diff.device);
+
+  const matchesSearch = (!filter.search || diff.desc.includes(filter.search))
+
+  let matchesMismatch = true;
+  if (filter.mismatch) {
+    if (diff.mismatchedPixels != null && filter.mismatch !== 'all') {
+      matchesMismatch = parseInt(filter.mismatch, 10) < diff.mismatchedPixels;
+    }
+  } else {
+    matchesMismatch = diff.mismatchedPixels > 0 || diff.mismatchedPixels == null;
+  }
+
+  diff.hidden = !(matchesDevice && matchesSearch && matchesMismatch);
+
+  return diff;
+}
+
+
+export function getFilterData() {
+  const filter: FilterData = {};
 
   const hash = location.hash.replace('#', '');
   if (hash !== '') {
@@ -10,78 +54,41 @@ function getFilterData() {
     splt.forEach(part => {
       const s = part.split('-');
       if (s.length > 1) {
-        filterData[s[0]] = s[1];
+        filter[s[0]] = s[1];
       } else {
-        filterData[s[0]] = true;
+        filter[s[0]] = true;
       }
     });
   }
+
+  return filter;
+}
+
+
+export function updateFilterData(existingFilter: FilterData, updatedFilter: FilterData) {
+  const filterData = Object.assign({}, existingFilter, updatedFilter);
+
+  const keys = Object.keys(filterData);
+  const newData: string[] = [];
+  keys.map(key => {
+    const d = filterData[key];
+    if (d === true) {
+      newData.push(key);
+    } else if (d != null && d !== '') {
+      newData.push(key + '-' + d);
+    }
+  });
+
+  window.location.hash = newData.sort().join(';');
 
   return filterData;
 }
 
 
-export function updateHash(updatedHashData: FilterData) {
-  const existingData = getFilterData();
-  const hashData = Object.assign(existingData, updatedHashData);
-
-  const keys = Object.keys(hashData);
-  const newData = keys.map(key => {
-    const d = hashData[key];
-    if (d === true) {
-      return key;
-    } else {
-      return key + '-' + d;
-    }
-  });
-
-  window.location.hash = newData.sort().join(';')
-}
-
-
-export function runFilters() {
-  const filterData = getFilterData();
-
-  if (filterData.diff) {
-    const diffElm = document.getElementById('d-' + filterData.diff);
-    if (diffElm) {
-      document.querySelector('.scroll-view').scrollTop = diffElm.offsetTop;
-    }
-  }
-
-  const rows = document.querySelectorAll('compare-row');
-  for (let i = 0; i < rows.length; i++) {
-    const row = rows[i];
-
-    row.hidden = false;
-
-    if (!filterData.mismatch && row.mismatchedPixels === 0) {
-      row.hidden = true;
-    }
-
-    if (!filterData.comparable && !row.isComparable) {
-      row.hidden = true;
-    }
-
-    if (filterData.device && filterData.device !== row.device) {
-      row.hidden = true;
-    }
-
-    if (!row.hidden) {
-      row.runCompare();
-    }
-  }
-}
-
-
-window.onhashchange = () => {
-  runFilters();
-};
-
-
 export interface FilterData {
   diff?: string;
-  mismatch?: 'any';
-  comparable?: 'all';
+  mismatch?: '' | '100' | '250' | '500' | '1000' | '2500' | '5000' | '10000' | 'all';
+  comparable?: string;
   device?: string;
+  search?: string;
 }

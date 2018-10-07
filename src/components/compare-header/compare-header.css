@@ -1,6 +1,7 @@
 
 :host {
   background: white;
+  box-shadow: var(--header-box-shadow);
 }
 
 nav {
@@ -21,6 +22,7 @@ nav a:hover {
 
 header {
   display: flex;
+  width: calc(100% - 115px);
   padding: 8px;
 }
 

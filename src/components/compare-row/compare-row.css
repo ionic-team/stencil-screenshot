@@ -4,3 +4,7 @@ compare-row canvas {
   box-shadow: var(--screenshot-box-shadow);
   border-radius: var(--screenshot-border-radius);
 }
+
+.is-loading {
+  visibility: hidden;
+}

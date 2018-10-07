@@ -12,14 +12,12 @@ export interface ScreenshotDiff {
   jsonpUrlB: string;
   imageDiff: string;
   mismatchedPixels: number;
-  mismatchedRatio: number;
   width: number;
   height: number;
-  naturalWidth: number;
-  naturalHeight: number;
   device: string;
   deviceScaleFactor: number;
   identical: boolean;
+  hidden: boolean;
 }
 
 export interface Repo {

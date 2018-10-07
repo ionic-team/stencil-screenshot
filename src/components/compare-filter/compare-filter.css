@@ -1,4 +1,32 @@
 
-:host {
-  text-align: right;
+select {
+  font-size: 10px;
+}
+
+input {
+  font-size: 10px;
+}
+
+.showing {
+  font-size: 12px;
+  white-space: nowrap;
+  margin: 17px 8px 0 0;
+  color: var(--analysis-data-color);
+}
+
+section {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.search {
+  margin: 13px 8px 0 0;
+}
+
+.device {
+  margin: 13px 8px 0 0;
+}
+
+.mismatch {
+  margin: 13px 8px 0 0;
 }

@@ -1,5 +1,6 @@
-import { Repo } from '../../helpers/declarations';
+import { Repo, ScreenshotDiff } from '../../helpers/declarations';
 import { Component, Prop } from '@stencil/core';
+import { FilterData } from '../../helpers/filter-data';
 
 
 @Component({
@@ -11,11 +12,13 @@ export class CompareHeader {
 
   @Prop() appSrcUrl: string;
   @Prop() repo: Repo = null;
+  @Prop() diffs: ScreenshotDiff[];
+  @Prop() filter: FilterData;
 
   logoClick(ev: UIEvent) {
     ev.preventDefault();
     ev.stopPropagation();
-    document.querySelector('.scroll-view').scrollTop = 0;
+    document.querySelector('.scroll-y').scrollTop = 0;
   }
 
   render() {
@@ -34,7 +37,9 @@ export class CompareHeader {
             <img src={this.appSrcUrl + '/assets/logo.png'}/>
           </a>
         </div>
-        <compare-filter class="filter"/>
+        <compare-filter
+          diffs={this.diffs}
+          filter={this.filter}/>
       </header>
     ];
   }

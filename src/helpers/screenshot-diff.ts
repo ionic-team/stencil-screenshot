@@ -18,13 +18,11 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
       imageDiff: null,
       identical: false,
       mismatchedPixels: null,
-      mismatchedRatio: null,
       width: screenshotA.width,
       height: screenshotA.height,
       deviceScaleFactor: screenshotA.deviceScaleFactor,
-      naturalWidth: screenshotA.naturalWidth,
-      naturalHeight: screenshotA.naturalHeight,
-      device: screenshotA.device || screenshotA.userAgent
+      device: screenshotA.device || screenshotA.userAgent,
+      hidden: true
     };
     return diff;
   });
@@ -50,13 +48,11 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
         imageDiff: null,
         identical: false,
         mismatchedPixels: null,
-        mismatchedRatio: null,
         width: screenshotB.width,
         height: screenshotB.height,
         deviceScaleFactor: screenshotB.deviceScaleFactor,
-        naturalWidth: screenshotB.naturalWidth,
-        naturalHeight: screenshotB.naturalHeight,
-        device: screenshotB.device || screenshotB.userAgent
+        device: screenshotB.device || screenshotB.userAgent,
+        hidden: true
       };
       screenshotDiffs.push(diff);
     }
@@ -67,18 +63,15 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
 
     if (diff.identical) {
       diff.mismatchedPixels = 0;
-      diff.mismatchedRatio = 0;
       return;
     }
 
     const cachedMismatchedPixels = getMismatchedPixels(diff.imageA, diff.imageB);
     if (typeof cachedMismatchedPixels === 'number') {
       diff.mismatchedPixels = cachedMismatchedPixels;
-      diff.mismatchedRatio = (diff.mismatchedPixels / (diff.naturalWidth * diff.naturalHeight));
 
       if (diff.mismatchedPixels === 0) {
         diff.identical = true;
-        return;
       }
     }
   });

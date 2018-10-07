@@ -1,0 +1,19 @@
+
+:host {
+  display: flex;
+}
+
+th-cell {
+  display: block;
+  flex: 1;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+th-cell div {
+  padding-left: 12px;
+}
+
+.analysis div {
+  width: 262px;
+}

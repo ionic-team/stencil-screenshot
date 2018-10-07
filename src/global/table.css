@@ -2,14 +2,7 @@
 compare-table {
   display: table;
   width: 100%;
-}
-
-compare-thead {
-  display: table-header-group;
-  font-weight: 500;
-  font-size: 12px;
-  background: white;
-  box-shadow: var(--header-box-shadow);
+  margin-top: 84px;
 }
 
 compare-tbody {
@@ -20,8 +13,7 @@ compare-tbody compare-cell {
   padding-top: 12px;
 }
 
-compare-row,
-compare-header-row {
+compare-row {
   display: table-row;
 }
 
