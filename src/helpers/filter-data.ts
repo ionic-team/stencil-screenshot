@@ -38,7 +38,7 @@ function filterDiff(filter: FilterData, diff: ScreenshotDiff) {
     matchesMismatch = diff.mismatchedPixels > 0 || diff.mismatchedPixels == null;
   }
 
-  diff.hidden = !(matchesDevice && matchesSearch && matchesMismatch);
+  diff.show = (matchesDevice && matchesSearch && matchesMismatch);
 
   return diff;
 }

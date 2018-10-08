@@ -15,7 +15,7 @@ export interface ScreenshotDiff {
   device: string;
   deviceScaleFactor: number;
   identical: boolean;
-  hidden: boolean;
+  show: boolean;
 }
 
 export interface Repo {

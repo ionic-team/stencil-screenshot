@@ -20,7 +20,7 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
       height: screenshotA.height,
       deviceScaleFactor: screenshotA.deviceScaleFactor,
       device: screenshotA.device || screenshotA.userAgent,
-      hidden: true
+      show: false
     };
     return diff;
   });
@@ -47,7 +47,7 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
         height: screenshotB.height,
         deviceScaleFactor: screenshotB.deviceScaleFactor,
         device: screenshotB.device || screenshotB.userAgent,
-        hidden: true
+        show: false
       };
       screenshotDiffs.push(diff);
     }

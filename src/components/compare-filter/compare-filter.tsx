@@ -30,7 +30,7 @@ export class CompareFilter {
       <section>
 
         <div class="showing">
-          Showing {this.diffs.filter(d => !d.hidden).length}
+          Showing {this.diffs.filter(d => d.show).length}
         </div>
 
         <div class="search">

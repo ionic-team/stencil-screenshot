@@ -14,7 +14,7 @@ export class CompareRow {
   @Prop() imagesUrl: string;
   @Prop() jsonpUrl: string;
   @Prop() diff: ScreenshotDiff;
-  @Prop({ reflectToAttr: true }) hidden: boolean;
+  @Prop() show: boolean;
   @Event() compareLoaded: EventEmitter<ScreenshotDiff>;
   @Element() elm: HTMLElement;
 
@@ -44,7 +44,7 @@ export class CompareRow {
   }
 
   loadScreenshots() {
-    if (this.hidden) {
+    if (!this.show) {
       return;
     }
 

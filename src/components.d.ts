@@ -7,10 +7,8 @@
 
 import '@stencil/core';
 
-import '@ionic/core';
 import '@stencil/router';
 import '@stencil/state-tunnel';
-import 'ionicons';
 import {
   Repo,
   ScreenshotDiff,
@@ -71,16 +69,16 @@ export namespace Components {
 
   interface CompareRow {
     'diff': ScreenshotDiff;
-    'hidden': boolean;
     'imagesUrl': string;
     'jsonpUrl': string;
+    'show': boolean;
   }
   interface CompareRowAttributes extends StencilHTMLAttributes {
     'diff'?: ScreenshotDiff;
-    'hidden'?: boolean;
     'imagesUrl'?: string;
     'jsonpUrl'?: string;
     'onCompareLoaded'?: (event: CustomEvent<ScreenshotDiff>) => void;
+    'show'?: boolean;
   }
 
   interface CompareThead {

@@ -65,7 +65,12 @@ export class ScreenshotCompare {
   }
 
   @Listen('compareLoaded')
-  compareLoaded() {
+  compareLoaded(ev: CustomEvent) {
+    const updatedDiff = (ev.detail as ScreenshotDiff);
+    const diff = this.diffs.find(d => d.id === updatedDiff.id);
+    if (diff) {
+      diff.mismatchedPixels = updatedDiff.mismatchedPixels;
+    }
     this.updateDiffs();
   }
 
@@ -96,7 +101,8 @@ export class ScreenshotCompare {
                 <compare-row
                   key={diff.id}
                   id={'d-' + diff.id}
-                  hidden={diff.hidden}
+                  show={diff.show}
+                  hidden={!diff.show}
                   imagesUrl={this.imagesUrl}
                   jsonpUrl={this.jsonpUrl}
                   diff={diff}/>
