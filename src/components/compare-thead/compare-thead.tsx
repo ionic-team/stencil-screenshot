@@ -13,6 +13,10 @@ export class CompareTHead {
   @Prop() b: ScreenshotBuild;
 
   render() {
+    if (!this.a || !this.b) {
+      return;
+    }
+
     let colWidth = 0;
     this.a.screenshots.forEach(s => {
       if (s.width > colWidth) {

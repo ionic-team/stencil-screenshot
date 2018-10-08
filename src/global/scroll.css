@@ -1,8 +1,12 @@
 
 body {
   overflow: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
 }
 
+.full-screen,
 screenshot-compare {
   position: absolute;
   display: block;

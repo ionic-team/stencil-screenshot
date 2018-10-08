@@ -3,7 +3,7 @@ import { ScreenshotBuild } from '@stencil/core/screenshot';
 import { getMismatchedPixels } from './mismatch-cache';
 
 
-export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, imagesUrl: string, jsonpUrl: string) {
+export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, imagesUrl: string) {
   const screenshotDiffs = a.screenshots.map(screenshotA => {
     const diff: d.ScreenshotDiff = {
       id: screenshotA.id,
@@ -11,10 +11,8 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
       testPath: screenshotA.testPath,
       imageA: screenshotA.image,
       imageUrlA: `${imagesUrl}${screenshotA.image}`,
-      jsonpUrlA: `${jsonpUrl}screenshot_${screenshotA.image}.js`,
       imageB: null,
       imageUrlB: null,
-      jsonpUrlB: null,
       imageDiff: null,
       identical: false,
       mismatchedPixels: null,
@@ -32,7 +30,6 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
     if (diff) {
       diff.imageB = screenshotB.image;
       diff.imageUrlB = `${imagesUrl}${screenshotB.image}`;
-      diff.jsonpUrlB = `${jsonpUrl}screenshot_${screenshotB.image}.js`;
 
     } else {
       diff = {
@@ -41,10 +38,8 @@ export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, ima
         testPath: screenshotB.testPath,
         imageA: null,
         imageUrlA: null,
-        jsonpUrlA: null,
         imageB: screenshotB.image,
         imageUrlB: `${imagesUrl}${screenshotB.image}`,
-        jsonpUrlB: `${jsonpUrl}screenshot_${screenshotB.image}.js`,
         imageDiff: null,
         identical: false,
         mismatchedPixels: null,

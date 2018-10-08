@@ -1,5 +1,4 @@
-// import '@ionic/core';
-// import '@stencil/router';
+import '@stencil/router';
 import { Component } from '@stencil/core';
 
 
@@ -10,11 +9,9 @@ export class AppRoot {
 
   render() {
     return (
-      <stencil-router>
-        <stencil-route-switch>
-          <stencil-route url="/" component="screenshot-lookup" exact={true} />
-          <stencil-route url="/:a/:b/" component="screenshot-compare" />
-        </stencil-route-switch>
+      <stencil-router class="full-screen">
+        <stencil-route url="/:buildIdA/:buildIdB" component="screenshot-compare" class="full-screen" />
+        <stencil-route url="/" component="screenshot-lookup" exact={true} class="full-screen" />
       </stencil-router>
     );
   }

@@ -15,6 +15,10 @@ export class CompareFilter {
   @Event() filterChange: EventEmitter<FilterData>;
 
   render() {
+    if (!this.diffs || this.diffs.length === 0 || !this.filter) {
+      return;
+    }
+
     const devices = this.diffs.reduce((devices, diff) => {
       if (!devices.some(d => d.value === diff.device)) {
         devices.push({ text: diff.device, value: diff.device })

@@ -4,28 +4,58 @@ import { createScreenshotDiff } from '../../helpers/screenshot-diff';
 import { ScreenshotDiff } from '../../helpers/declarations';
 import { FilterData, getFilterData, updateFilterData } from '../../helpers/filter-data';
 import { filterDiffs } from '../../helpers/filter-data';
+import { MatchResults } from '@stencil/router';
 
 
 @Component({
   tag: 'screenshot-compare'
 })
-export class LocalCompare {
+export class ScreenshotCompare {
 
-  @Prop() appSrcUrl: string;
-  @Prop() imagesUrl: string;
-  @Prop() jsonpUrl: string;
-  @Prop() a: ScreenshotBuild;
-  @Prop() b: ScreenshotBuild;
-  @Prop() buildIdA: string;
-  @Prop() buildIdB: string;
+  @Prop() appSrcUrl = '';
+  @Prop() imagesUrl = '/data/images/';
+  @Prop() buildsUrl = '/data/builds/';
+  @Prop() jsonpUrl: string = null;
+  @Prop({ mutable: true }) a: ScreenshotBuild;
+  @Prop({ mutable: true }) b: ScreenshotBuild;
+  @Prop() match: MatchResults;
 
-  diffs: ScreenshotDiff[] = [];
+  @State() diffs: ScreenshotDiff[] = [];
   @State() filter: FilterData;
 
-  componentWillLoad() {
-    this.filter = getFilterData();
-    this.diffs = createScreenshotDiff(this.a, this.b, this.imagesUrl, this.jsonpUrl);
-    this.updateDiffs();
+  async componentWillLoad() {
+    if (this.match) {
+      if (this.match.params.buildIdA && this.match.params.buildIdB) {
+        await this.loadBuilds(this.match.params.buildIdA, this.match.params.buildIdB);
+      }
+    }
+
+    if (this.a && this.b) {
+      this.filter = getFilterData();
+      this.diffs = createScreenshotDiff(this.a, this.b, this.imagesUrl);
+      this.updateDiffs();
+    }
+  }
+
+  async loadBuilds(buildIdA: string, buildIdB: string) {
+    const urlA = `${this.buildsUrl}${buildIdA}.json`;
+    const urlB = `${this.buildsUrl}${buildIdB}.json`;
+
+    const requests = await Promise.all([
+      fetch(urlA),
+      fetch(urlB)
+    ]);
+
+    const reqA = await requests[0];
+    const reqB = await requests[1];
+
+    if (reqA.ok) {
+      this.a = await requests[0].json();
+    }
+
+    if (reqB.ok) {
+      this.b = await requests[1].json();
+    }
   }
 
   @Listen('filterChange')
@@ -68,6 +98,7 @@ export class LocalCompare {
                   id={'d-' + diff.id}
                   hidden={diff.hidden}
                   imagesUrl={this.imagesUrl}
+                  jsonpUrl={this.jsonpUrl}
                   diff={diff}/>
               ))}
 

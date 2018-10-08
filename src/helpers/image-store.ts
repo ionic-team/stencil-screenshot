@@ -1,5 +1,5 @@
 
-export function loadJsonpDataUri(imageId: string, jsonpUrl: string, cb: (dataUri: string) => void) {
+export function loadJsonpDataUri(jsonpUrl: string, imageId: string, cb: (dataUri: string) => void) {
   if (completedImages.has(imageId)) {
     cb(completedImages.get(imageId));
     return;
@@ -13,9 +13,9 @@ export function loadJsonpDataUri(imageId: string, jsonpUrl: string, cb: (dataUri
 
   pendingImages.set(imageId, [cb]);
 
-  const jsonp = document.createElement('script');
-  jsonp.src = jsonpUrl;
-  document.head.appendChild(jsonp);
+  const jsonpScript = document.createElement('script');
+  jsonpScript.src = `${jsonpUrl}screenshot_${imageId}.js`;
+  document.head.appendChild(jsonpScript);
 }
 
 (window as any).loadScreenshot = (imageId: string, dataUri: string) => {

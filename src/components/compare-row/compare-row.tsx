@@ -12,9 +12,10 @@ import { loadJsonpDataUri } from '../../helpers/image-store';
 export class CompareRow {
 
   @Prop() imagesUrl: string;
+  @Prop() jsonpUrl: string;
   @Prop() diff: ScreenshotDiff;
   @Prop({ reflectToAttr: true }) hidden: boolean;
-  @Event() compareLoaded: EventEmitter;
+  @Event() compareLoaded: EventEmitter<ScreenshotDiff>;
   @Element() elm: HTMLElement;
 
   @State() imageASrc = '';
@@ -49,7 +50,7 @@ export class CompareRow {
 
     if (this.diff.identical) {
       this.imageASrc = this.imagesUrl + this.diff.imageA;
-      this.imageBSrc = this.imagesUrl + this.diff.imageA;
+      this.imageBSrc = this.imagesUrl + this.diff.imageB;
       return;
     }
 
@@ -62,20 +63,22 @@ export class CompareRow {
     this.canvasClass = 'is-loading';
     this.initializeCalculateMismatch = true;
 
-    if (this.diff.imageA != null) {
-      loadJsonpDataUri(this.diff.imageA, this.diff.jsonpUrlA, dataUri => {
-        this.imageASrc = dataUri;
-        this.imageAClass = 'has-loaded';
-        this.isImageALoaded = true;
-      });
-    }
+    if (this.jsonpUrl != null) {
+      if (this.diff.imageA != null) {
+        loadJsonpDataUri(this.jsonpUrl, this.diff.imageA, dataUri => {
+          this.imageASrc = dataUri;
+        });
+      }
 
-    if (this.diff.imageB != null) {
-      loadJsonpDataUri(this.diff.imageB, this.diff.jsonpUrlB, dataUri => {
-        this.imageBSrc = dataUri;
-        this.imageBClass = 'has-loaded';
-        this.isImageBLoaded = true;
-      });
+      if (this.diff.imageB != null) {
+        loadJsonpDataUri(this.jsonpUrl, this.diff.imageB, dataUri => {
+          this.imageBSrc = dataUri;
+        });
+      }
+
+    } else {
+      this.imageASrc = this.imagesUrl + this.diff.imageA;
+      this.imageBSrc = this.imagesUrl + this.diff.imageB;
     }
   }
 
@@ -99,7 +102,7 @@ export class CompareRow {
 
     setMismatchedPixels(diff.imageA, diff.imageB, diff.mismatchedPixels);
 
-    this.compareLoaded.emit();
+    this.compareLoaded.emit(diff);
   }
 
   render() {
@@ -115,7 +118,11 @@ export class CompareRow {
           src={this.imageASrc}
           class={this.imageAClass}
           style={style}
-          onLoad={this.diff.identical ? null : this.compareImages.bind(this)}
+          onLoad={this.diff.identical ? null : () => {
+            this.isImageALoaded = true;
+            this.imageAClass = 'has-loaded';
+            this.compareImages();
+          }}
           ref={elm => this.imageA = elm}
         />
       </compare-cell>,
@@ -125,7 +132,11 @@ export class CompareRow {
           src={this.imageBSrc}
           class={this.imageBClass}
           style={style}
-          onLoad={this.diff.identical ? null : this.compareImages.bind(this)}
+          onLoad={this.diff.identical ? null : () => {
+            this.isImageBLoaded = true;
+            this.imageBClass = 'has-loaded';
+            this.compareImages();
+          }}
           ref={elm => this.imageB = elm}
         />
       </compare-cell>,
@@ -146,7 +157,9 @@ export class CompareRow {
       </compare-cell>,
 
       <compare-cell>
-        <compare-analysis diff={this.diff}/>
+        <compare-analysis
+          mismatchedPixels={this.diff.mismatchedPixels}
+          diff={this.diff}/>
       </compare-cell>
     ];
   }

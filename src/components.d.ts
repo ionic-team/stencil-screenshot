@@ -7,7 +7,10 @@
 
 import '@stencil/core';
 
-
+import '@ionic/core';
+import '@stencil/router';
+import '@stencil/state-tunnel';
+import 'ionicons';
 import {
   Repo,
   ScreenshotDiff,
@@ -24,6 +27,9 @@ import {
 import {
   ScreenshotBuild as ScreenshotBuild2,
 } from '@stencil/core/screenshot';
+import {
+  MatchResults,
+} from '@stencil/router';
 
 
 export namespace Components {
@@ -33,9 +39,11 @@ export namespace Components {
 
   interface CompareAnalysis {
     'diff': ScreenshotDiff;
+    'mismatchedPixels': number;
   }
   interface CompareAnalysisAttributes extends StencilHTMLAttributes {
     'diff'?: ScreenshotDiff;
+    'mismatchedPixels'?: number;
   }
 
   interface CompareFilter {
@@ -65,12 +73,14 @@ export namespace Components {
     'diff': ScreenshotDiff;
     'hidden': boolean;
     'imagesUrl': string;
+    'jsonpUrl': string;
   }
   interface CompareRowAttributes extends StencilHTMLAttributes {
     'diff'?: ScreenshotDiff;
     'hidden'?: boolean;
     'imagesUrl'?: string;
-    'onCompareLoaded'?: (event: CustomEvent) => void;
+    'jsonpUrl'?: string;
+    'onCompareLoaded'?: (event: CustomEvent<ScreenshotDiff>) => void;
   }
 
   interface CompareThead {
@@ -86,19 +96,19 @@ export namespace Components {
     'a': ScreenshotBuild;
     'appSrcUrl': string;
     'b': ScreenshotBuild;
-    'buildIdA': string;
-    'buildIdB': string;
+    'buildsUrl': string;
     'imagesUrl': string;
     'jsonpUrl': string;
+    'match': MatchResults;
   }
   interface ScreenshotCompareAttributes extends StencilHTMLAttributes {
     'a'?: ScreenshotBuild;
     'appSrcUrl'?: string;
     'b'?: ScreenshotBuild;
-    'buildIdA'?: string;
-    'buildIdB'?: string;
+    'buildsUrl'?: string;
     'imagesUrl'?: string;
     'jsonpUrl'?: string;
+    'match'?: MatchResults;
   }
 
   interface ScreenshotLookup {}

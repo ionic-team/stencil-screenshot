@@ -6,10 +6,8 @@ export interface ScreenshotDiff {
   testPath: string;
   imageA: string;
   imageUrlA: string;
-  jsonpUrlA: string;
   imageB: string;
   imageUrlB: string;
-  jsonpUrlB: string;
   imageDiff: string;
   mismatchedPixels: number;
   width: number;

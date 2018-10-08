@@ -10,6 +10,7 @@ import { ScreenshotDiff } from '../../helpers/declarations';
 export class CompareAnalysis {
 
   @Prop() diff: ScreenshotDiff;
+  @Prop() mismatchedPixels: number = null;
 
   navToId(ev: UIEvent) {
     ev.preventDefault();
@@ -22,12 +23,13 @@ export class CompareAnalysis {
 
   render() {
     const diff = this.diff;
-    const hasCalculated = typeof diff.mismatchedPixels === 'number';
-    const mismatchedRatio = hasCalculated ? (diff.mismatchedPixels / ((diff.width * diff.deviceScaleFactor) * (diff.height * diff.deviceScaleFactor))) : null;
+
+    const hasCalculated = typeof this.mismatchedPixels === 'number';
+    const mismatchedRatio = hasCalculated ? (this.mismatchedPixels / ((diff.width * diff.deviceScaleFactor) * (diff.height * diff.deviceScaleFactor))) : null;
 
     let mismatchClass = '';
     if (hasCalculated) {
-      if (diff.mismatchedPixels > 0) {
+      if (this.mismatchedPixels > 0) {
         mismatchClass = 'has-mismatch';
       }
     } else {
@@ -45,7 +47,7 @@ export class CompareAnalysis {
         </div>
         <div class={mismatchClass}>
           <dt>Mismatched Pixels</dt>
-          <dd>{hasCalculated ? diff.mismatchedPixels : '--'}</dd>
+          <dd>{hasCalculated ? this.mismatchedPixels : '--'}</dd>
         </div>
         <div class={mismatchClass}>
           <dt>Mismatched Ratio</dt>
