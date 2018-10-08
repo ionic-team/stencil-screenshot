@@ -6,7 +6,6 @@ body {
   height: 100vh;
 }
 
-.full-screen,
 screenshot-compare {
   position: absolute;
   display: block;
