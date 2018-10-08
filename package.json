@@ -3,9 +3,6 @@
   "private": true,
   "version": "0.0.1",
   "description": "Stencil Screenshot Visual Diff App",
-  "files": [
-    "dist/"
-  ],
   "scripts": {
     "build": "stencil build --es5 && npm run remove.svgs",
     "remove.svgs": "rimraf ../stencil/screenshot/app/build/app/svg",

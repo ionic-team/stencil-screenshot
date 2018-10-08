@@ -15,5 +15,6 @@ log.txt
 node_modules/
 
 /dist/
+/www/
 **/www/build/
 .stencil/
