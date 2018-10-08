@@ -6,6 +6,7 @@ export const config: Config = {
   outputTargets: [
     {
       type: 'www',
+      dir: '../stencil/screenshot/compare/',
       serviceWorker: null
     }
   ],

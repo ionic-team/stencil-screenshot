@@ -4,14 +4,15 @@
   "version": "0.0.1",
   "description": "Stencil Screenshot Visual Diff App",
   "scripts": {
-    "build": "stencil build --es5 && npm run remove.svgs",
+    "build": "stencil build --es5",
+    "build.sibling": "stencil build --config stencil.config-sibling.ts --es5 && npm run remove.svgs",
     "remove.svgs": "rimraf ../stencil/screenshot/app/build/app/svg",
     "start": "stencil build --dev --es5 --watch --serve",
     "test": "stencil test --spec",
     "test.watch": "stencil test --spec --watch"
   },
   "dependencies": {
-    "@stencil/core": "0.13.0-3",
+    "@stencil/core": "0.14.0-1",
     "pixelmatch": "^4.0.2"
   },
   "devDependencies": {
