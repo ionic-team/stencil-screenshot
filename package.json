@@ -5,8 +5,7 @@
   "description": "Stencil Screenshot Visual Diff App",
   "scripts": {
     "build": "stencil build --es5",
-    "build.sibling": "stencil build --config stencil.config-sibling.ts --es5 && npm run remove.svgs",
-    "remove.svgs": "rimraf ../stencil/screenshot/app/build/app/svg",
+    "build.sibling": "stencil build --config stencil.config-sibling.ts --es5",
     "start": "stencil build --dev --es5 --watch --serve",
     "test": "stencil test --spec",
     "test.watch": "stencil test --spec --watch"
@@ -22,7 +21,6 @@
     "jest": "23.5.0",
     "jest-environment-node": "23.4.0",
     "puppeteer": "1.7.0",
-    "rimraf": "2.6.2",
     "workbox-build": "^3.4.1"
   },
   "author": "Ionic Team",
