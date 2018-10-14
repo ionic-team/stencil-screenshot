@@ -20,10 +20,10 @@ import {
   EventEmitter,
 } from '@stencil/core';
 import {
-  ScreenshotBuild,
+  ScreenshotCompareResults,
 } from '@stencil/core/dist/screenshot';
 import {
-  ScreenshotBuild as ScreenshotBuild2,
+  ScreenshotCompareResults as ScreenshotCompareResults2,
 } from '@stencil/core/screenshot';
 import {
   MatchResults,
@@ -42,6 +42,7 @@ export namespace Components {
   interface CompareAnalysisAttributes extends StencilHTMLAttributes {
     'diff'?: ScreenshotDiff;
     'mismatchedPixels'?: number;
+    'onDiffNavChange'?: (event: CustomEvent<string>) => void;
   }
 
   interface CompareFilter {
@@ -82,28 +83,26 @@ export namespace Components {
   }
 
   interface CompareThead {
-    'a': ScreenshotBuild;
-    'b': ScreenshotBuild;
+    'compare': ScreenshotCompareResults;
   }
   interface CompareTheadAttributes extends StencilHTMLAttributes {
-    'a'?: ScreenshotBuild;
-    'b'?: ScreenshotBuild;
+    'compare'?: ScreenshotCompareResults;
   }
 
   interface ScreenshotCompare {
-    'a': ScreenshotBuild;
     'appSrcUrl': string;
-    'b': ScreenshotBuild;
     'buildsUrl': string;
+    'compare': ScreenshotCompareResults;
+    'comparesUrl': string;
     'imagesUrl': string;
     'jsonpUrl': string;
     'match': MatchResults;
   }
   interface ScreenshotCompareAttributes extends StencilHTMLAttributes {
-    'a'?: ScreenshotBuild;
     'appSrcUrl'?: string;
-    'b'?: ScreenshotBuild;
     'buildsUrl'?: string;
+    'compare'?: ScreenshotCompareResults;
+    'comparesUrl'?: string;
     'imagesUrl'?: string;
     'jsonpUrl'?: string;
     'match'?: MatchResults;

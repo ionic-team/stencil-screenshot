@@ -1,4 +1,4 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Event, EventEmitter, Prop } from '@stencil/core';
 import { ScreenshotDiff } from '../../helpers/declarations';
 
 
@@ -11,14 +11,12 @@ export class CompareAnalysis {
 
   @Prop() diff: ScreenshotDiff;
   @Prop() mismatchedPixels: number = null;
+  @Event() diffNavChange: EventEmitter<string>;
 
-  navToId(ev: UIEvent) {
+  navToDiff(ev: UIEvent) {
     ev.preventDefault();
     ev.stopPropagation();
-
-    // updateHash({
-    //   diff: this.diffId
-    // });
+    this.diffNavChange.emit(this.diff.id);
   }
 
   render() {
@@ -43,7 +41,7 @@ export class CompareAnalysis {
       <dl>
         <div>
           <dt>Diff</dt>
-          <dd><a href={'#diff-' + diff.id} onClick={this.navToId.bind(this)}>{diff.id}</a></dd>
+          <dd><a href={'#diff-' + diff.id} onClick={this.navToDiff.bind(this)}>{diff.id}</a></dd>
         </div>
         <div class={mismatchClass}>
           <dt>Mismatched Pixels</dt>

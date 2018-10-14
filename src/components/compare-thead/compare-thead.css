@@ -12,6 +12,10 @@ th-cell {
 
 th-cell div {
   padding-left: 12px;
+  padding-right: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .analysis div {

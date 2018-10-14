@@ -96,6 +96,12 @@ export class CompareFilter {
             <option value="10000" selected={this.filter.mismatch === '10000'}>
               &gt; 10,000
             </option>
+            <option value="25000" selected={this.filter.mismatch === '25000'}>
+              &gt; 25,000
+            </option>
+            <option value="50000" selected={this.filter.mismatch === '50000'}>
+              &gt; 50,000
+            </option>
             <option value="all" selected={this.filter.mismatch === 'all'}>
               All Screenshots
             </option>

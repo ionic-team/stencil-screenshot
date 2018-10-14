@@ -1,75 +1,49 @@
 import * as d from './declarations';
-import { ScreenshotBuild } from '@stencil/core/screenshot';
 import { getMismatchedPixels } from './mismatch-cache';
+import { ScreenshotBuild } from '@stencil/core/screenshot';
 
 
-export function createScreenshotDiff(a: ScreenshotBuild, b: ScreenshotBuild, imagesUrl: string) {
-  const screenshotDiffs = a.screenshots.map(screenshotA => {
+export function calculateScreenshotDiffs(imagesUrl: string, buildA: ScreenshotBuild, buildB: ScreenshotBuild) {
+  const diffs: d.ScreenshotDiff[] = [];
+
+  buildA.screenshots.forEach(screenshotA => {
+    const screenshotB = buildB.screenshots.find(s => s.id === screenshotA.id);
+    if (!screenshotB) {
+      return;
+    }
+
+    const identical = (screenshotA.image === screenshotB.image);
+
     const diff: d.ScreenshotDiff = {
       id: screenshotA.id,
       desc: screenshotA.desc,
       testPath: screenshotA.testPath,
       imageA: screenshotA.image,
       imageUrlA: `${imagesUrl}${screenshotA.image}`,
-      imageB: null,
-      imageUrlB: null,
-      imageDiff: null,
-      identical: false,
-      mismatchedPixels: null,
+      imageB: screenshotB.image,
+      imageUrlB: `${imagesUrl}${screenshotB.image}`,
+      identical: identical,
+      mismatchedPixels: (identical ? 0 : null),
       width: screenshotA.width,
       height: screenshotA.height,
       deviceScaleFactor: screenshotA.deviceScaleFactor,
-      device: screenshotA.device || screenshotA.userAgent,
+      device: (screenshotA.device || screenshotA.userAgent),
       show: false
     };
-    return diff;
-  });
 
-  b.screenshots.forEach(screenshotB => {
-    let diff = screenshotDiffs.find(s => s.id === screenshotB.id) as d.ScreenshotDiff;
-    if (diff) {
-      diff.imageB = screenshotB.image;
-      diff.imageUrlB = `${imagesUrl}${screenshotB.image}`;
+    if (!identical) {
+      const cachedMismatchedPixels = getMismatchedPixels(diff.imageA, diff.imageB);
+      if (typeof cachedMismatchedPixels === 'number') {
+        diff.mismatchedPixels = cachedMismatchedPixels;
 
-    } else {
-      diff = {
-        id: screenshotB.id,
-        desc: screenshotB.desc,
-        testPath: screenshotB.testPath,
-        imageA: null,
-        imageUrlA: null,
-        imageB: screenshotB.image,
-        imageUrlB: `${imagesUrl}${screenshotB.image}`,
-        imageDiff: null,
-        identical: false,
-        mismatchedPixels: null,
-        width: screenshotB.width,
-        height: screenshotB.height,
-        deviceScaleFactor: screenshotB.deviceScaleFactor,
-        device: screenshotB.device || screenshotB.userAgent,
-        show: false
-      };
-      screenshotDiffs.push(diff);
-    }
-  });
-
-  screenshotDiffs.forEach(diff => {
-    diff.identical = (diff.imageUrlA === diff.imageUrlB);
-
-    if (diff.identical) {
-      diff.mismatchedPixels = 0;
-      return;
-    }
-
-    const cachedMismatchedPixels = getMismatchedPixels(diff.imageA, diff.imageB);
-    if (typeof cachedMismatchedPixels === 'number') {
-      diff.mismatchedPixels = cachedMismatchedPixels;
-
-      if (diff.mismatchedPixels === 0) {
-        diff.identical = true;
+        if (diff.mismatchedPixels === 0) {
+          diff.identical = true;
+        }
       }
     }
+
+    diffs.push(diff);
   });
 
-  return screenshotDiffs;
+  return diffs;
 }

@@ -1,5 +1,5 @@
 import { Component, Prop } from '@stencil/core';
-import { ScreenshotBuild } from '@stencil/core/dist/screenshot';
+import { ScreenshotCompareResults } from '@stencil/core/dist/screenshot';
 
 
 @Component({
@@ -9,22 +9,21 @@ import { ScreenshotBuild } from '@stencil/core/dist/screenshot';
 })
 export class CompareTHead {
 
-  @Prop() a: ScreenshotBuild;
-  @Prop() b: ScreenshotBuild;
+  @Prop() compare: ScreenshotCompareResults;
 
   render() {
-    if (!this.a || !this.b) {
+    if (!this.compare) {
       return;
     }
 
     let colWidth = 0;
-    this.a.screenshots.forEach(s => {
-      if (s.width > colWidth) {
-        colWidth = s.width;
+    this.compare.diffs.forEach(diff => {
+      if (diff.width > colWidth) {
+        colWidth = diff.width;
       }
     });
 
-    colWidth += 8;
+    colWidth = colWidth - 6;
 
     const style = {
       width: colWidth + 'px'
@@ -34,13 +33,13 @@ export class CompareTHead {
 
       <th-cell>
         <div style={style}>
-          {this.a.message}
+          <a href={this.compare.a.url}>{this.compare.a.message}</a>
         </div>
       </th-cell>,
 
       <th-cell>
         <div style={style}>
-          {this.b.message}
+          <a href={this.compare.b.url}>{this.compare.b.message}</a>
         </div>
       </th-cell>,
 

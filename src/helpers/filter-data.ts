@@ -30,10 +30,14 @@ function filterDiff(filter: FilterData, diff: ScreenshotDiff) {
   const matchesSearch = (!filter.search || diff.desc.includes(filter.search))
 
   let matchesMismatch = true;
-  if (filter.mismatch) {
+  if (filter.diff && (filter.diff === diff.id)) {
+    matchesMismatch = true;
+
+  } else if (filter.mismatch) {
     if (diff.mismatchedPixels != null && filter.mismatch !== 'all') {
       matchesMismatch = parseInt(filter.mismatch, 10) < diff.mismatchedPixels;
     }
+
   } else {
     matchesMismatch = diff.mismatchedPixels > 0 || diff.mismatchedPixels == null;
   }
@@ -87,7 +91,7 @@ export function updateFilterData(existingFilter: FilterData, updatedFilter: Filt
 
 export interface FilterData {
   diff?: string;
-  mismatch?: '' | '100' | '250' | '500' | '1000' | '2500' | '5000' | '10000' | 'all';
+  mismatch?: '' | '100' | '250' | '500' | '1000' | '2500' | '5000' | '10000' | '25000' | '50000' | 'all';
   comparable?: string;
   device?: string;
   search?: string;

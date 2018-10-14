@@ -1,10 +1,10 @@
 import { Component, Prop, Listen, State } from '@stencil/core';
-import { ScreenshotBuild } from '@stencil/core/screenshot';
-import { createScreenshotDiff } from '../../helpers/screenshot-diff';
+import { ScreenshotCompareResults, ScreenshotBuild } from '@stencil/core/screenshot';
 import { ScreenshotDiff } from '../../helpers/declarations';
 import { FilterData, getFilterData, updateFilterData } from '../../helpers/filter-data';
 import { filterDiffs } from '../../helpers/filter-data';
 import { MatchResults } from '@stencil/router';
+import { calculateScreenshotDiffs } from '../../helpers/screenshot-diff';
 
 
 @Component({
@@ -15,46 +15,60 @@ export class ScreenshotCompare {
   @Prop() appSrcUrl = '';
   @Prop() imagesUrl = '/data/images/';
   @Prop() buildsUrl = '/data/builds/';
+  @Prop() comparesUrl = '/data/compares/';
   @Prop() jsonpUrl: string = null;
-  @Prop({ mutable: true }) a: ScreenshotBuild;
-  @Prop({ mutable: true }) b: ScreenshotBuild;
+  @Prop({ mutable: true }) compare: ScreenshotCompareResults;
   @Prop() match: MatchResults;
 
-  @State() diffs: ScreenshotDiff[] = [];
   @State() filter: FilterData;
+  @State() diffs: ScreenshotDiff[] = [];
 
   async componentWillLoad() {
-    if (this.match) {
+    if (this.compare) {
+      this.diffs = loadServerSideCompare(this.compare, this.imagesUrl);
+
+    } else if (this.match) {
       if (this.match.params.buildIdA && this.match.params.buildIdB) {
         await this.loadBuilds(this.match.params.buildIdA, this.match.params.buildIdB);
       }
     }
 
-    if (this.a && this.b) {
+    if (this.compare) {
       this.filter = getFilterData();
-      this.diffs = createScreenshotDiff(this.a, this.b, this.imagesUrl);
       this.updateDiffs();
     }
   }
 
+  componentDidLoad() {
+    if (this.filter && this.filter.diff) {
+      this.navToDiff(this.filter.diff);
+    }
+  }
+
   async loadBuilds(buildIdA: string, buildIdB: string) {
+    const urlCompare = `${this.comparesUrl}${buildIdA}-${buildIdB}.json`;
     const urlA = `${this.buildsUrl}${buildIdA}.json`;
     const urlB = `${this.buildsUrl}${buildIdB}.json`;
 
     const requests = await Promise.all([
+      fetch(urlCompare),
       fetch(urlA),
       fetch(urlB)
     ]);
 
-    const reqA = await requests[0];
-    const reqB = await requests[1];
+    const reqCompare = await requests[0];
+    const reqA = await requests[1];
+    const reqB = await requests[2];
 
-    if (reqA.ok) {
-      this.a = await requests[0].json();
-    }
+    if (reqCompare.ok) {
+      const serverSideCompare: ScreenshotCompareResults = await reqCompare.json();
+      this.diffs = loadServerSideCompare(serverSideCompare, this.imagesUrl);
 
-    if (reqB.ok) {
-      this.b = await requests[1].json();
+    } else if (reqA.ok && reqB.ok) {
+      const buildA: ScreenshotBuild = await reqA.json();
+      const buildB: ScreenshotBuild = await reqB.json();
+
+      this.diffs = await calculateScreenshotDiffs(this.imagesUrl, buildA, buildB);
     }
   }
 
@@ -62,6 +76,26 @@ export class ScreenshotCompare {
   filterChange(ev: UIEvent) {
     this.filter = updateFilterData(this.filter, ev.detail as any);
     this.updateDiffs();
+  }
+
+  @Listen('diffNavChange')
+  diffNavChange(ev: UIEvent) {
+    const diffId = ev.detail as any;
+
+    this.filter = updateFilterData(this.filter, {
+      diff: diffId
+    });
+    this.updateDiffs();
+
+    this.navToDiff(diffId);
+  }
+
+  navToDiff(diffId: string) {
+    const diffElm = document.getElementById(`d-${diffId}`);
+    const scrollElm = document.querySelector('.scroll-y');
+    if (diffElm && scrollElm) {
+      scrollElm.scrollTop = diffElm.offsetTop - 84;
+    }
   }
 
   @Listen('compareLoaded')
@@ -87,9 +121,7 @@ export class ScreenshotCompare {
 
       <section class="scroll-x">
 
-        <compare-thead
-          a={this.a}
-          b={this.b}/>
+        <compare-thead compare={this.compare}/>
 
         <section class="scroll-y">
 
@@ -117,4 +149,30 @@ export class ScreenshotCompare {
       </section>
     ];
   }
+}
+
+
+function loadServerSideCompare(serverSideCompare: ScreenshotCompareResults, imagesUrl: string) {
+  const diffs = serverSideCompare.diffs.map(serverSideDiff => {
+    const diff: ScreenshotDiff = {
+      id: serverSideDiff.id,
+      desc: serverSideDiff.desc,
+      testPath: serverSideDiff.testPath,
+      imageA: serverSideDiff.imageA,
+      imageUrlA: `${imagesUrl}${serverSideDiff.imageA}`,
+      imageB: serverSideDiff.imageB,
+      imageUrlB: `${imagesUrl}${serverSideDiff.imageB}`,
+      identical: (serverSideDiff.mismatchedPixels === 0),
+      mismatchedPixels: serverSideDiff.mismatchedPixels,
+      width: serverSideDiff.width,
+      height: serverSideDiff.height,
+      deviceScaleFactor: serverSideDiff.deviceScaleFactor,
+      device: (serverSideDiff.device || serverSideDiff.userAgent),
+      show: false
+    };
+
+    return diff;
+  });
+
+  return diffs;
 }
