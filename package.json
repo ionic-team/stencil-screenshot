@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "description": "Stencil Screenshot Visual Diff App",
   "scripts": {
-    "build": "stencil build --es5",
+    "build": "stencil build --es5 --dev",
     "build.sibling": "stencil build --config stencil.config-sibling.ts --es5",
     "start": "stencil build --dev --es5 --watch --serve",
     "test": "stencil test --spec",
