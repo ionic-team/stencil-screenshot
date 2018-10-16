@@ -33,10 +33,8 @@ export class ScreenshotCompare {
       }
     }
 
-    if (this.compare) {
-      this.filter = getFilterData();
-      this.updateDiffs();
-    }
+    this.filter = getFilterData();
+    this.updateDiffs();
   }
 
   componentDidLoad() {
