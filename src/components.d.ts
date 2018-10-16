@@ -20,10 +20,10 @@ import {
   EventEmitter,
 } from '@stencil/core';
 import {
-  ScreenshotCompareResults,
+  ScreenshotBuild,
 } from '@stencil/core/dist/screenshot';
 import {
-  ScreenshotCompareResults as ScreenshotCompareResults2,
+  ScreenshotCompareResults,
 } from '@stencil/core/screenshot';
 import {
   MatchResults,
@@ -83,10 +83,14 @@ export namespace Components {
   }
 
   interface CompareThead {
-    'compare': ScreenshotCompareResults;
+    'a': ScreenshotBuild;
+    'b': ScreenshotBuild;
+    'diffs': ScreenshotDiff[];
   }
   interface CompareTheadAttributes extends StencilHTMLAttributes {
-    'compare'?: ScreenshotCompareResults;
+    'a'?: ScreenshotBuild;
+    'b'?: ScreenshotBuild;
+    'diffs'?: ScreenshotDiff[];
   }
 
   interface ScreenshotCompare {

@@ -17,11 +17,14 @@ export class ScreenshotCompare {
   @Prop() buildsUrl = '/data/builds/';
   @Prop() comparesUrl = '/data/compares/';
   @Prop() jsonpUrl: string = null;
-  @Prop({ mutable: true }) compare: ScreenshotCompareResults;
+  @Prop() compare: ScreenshotCompareResults;
   @Prop() match: MatchResults;
 
   @State() filter: FilterData;
   @State() diffs: ScreenshotDiff[] = [];
+
+  a: ScreenshotBuild;
+  b: ScreenshotBuild;
 
   async componentWillLoad() {
     if (this.compare) {
@@ -70,11 +73,14 @@ export class ScreenshotCompare {
       const serverSideCompare: ScreenshotCompareResults = await reqCompare.json();
       this.diffs = loadServerSideCompare(serverSideCompare, this.imagesUrl);
 
-    } else if (reqA.ok && reqB.ok) {
-      const buildA: ScreenshotBuild = await reqA.json();
-      const buildB: ScreenshotBuild = await reqB.json();
+      this.a = serverSideCompare.a as any;
+      this.b = serverSideCompare.b as any;
 
-      this.diffs = await calculateScreenshotDiffs(this.imagesUrl, buildA, buildB);
+    } else if (reqA.ok && reqB.ok) {
+      this.a = await reqA.json();
+      this.b = await reqB.json();
+
+      this.diffs = await calculateScreenshotDiffs(this.imagesUrl, this.a, this.b);
     }
   }
 
@@ -127,7 +133,10 @@ export class ScreenshotCompare {
 
       <section class="scroll-x">
 
-        <compare-thead compare={this.compare}/>
+        <compare-thead
+          a={this.a}
+          b={this.b}
+          diffs={this.diffs}/>
 
         <section class="scroll-y">
 
