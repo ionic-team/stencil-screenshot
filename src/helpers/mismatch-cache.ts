@@ -6,7 +6,7 @@ export function getMismatchedPixels(imageA: string, imageB: string) {
   if (typeof mismatchedPixels === 'string') {
     const num = parseInt(mismatchedPixels, 10);
     if (!isNaN(num)) {
-      // return num;
+      return num;
     }
   }
   return null;
