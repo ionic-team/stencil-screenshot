@@ -18,6 +18,16 @@ th-cell div {
   text-overflow: ellipsis;
 }
 
+th-cell a {
+  color: var(--font-color);
+  text-decoration: none;
+}
+
+th-cell a:hover {
+  color: var(--analysis-data-color);
+  text-decoration: underline;
+}
+
 .analysis div {
   width: 262px;
 }
