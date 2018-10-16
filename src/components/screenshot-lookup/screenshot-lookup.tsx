@@ -15,12 +15,15 @@ export class ScreenshotLookup {
     ev.preventDefault();
     ev.stopPropagation();
 
-    const a = this.a.trim().toLowerCase();
-    const b = this.b.trim().toLowerCase();
+    let a = this.a.trim().toLowerCase();
+    let b = this.b.trim().toLowerCase();
 
     if (!a || !b) {
       return;
     }
+
+    a = a.substring(0, 7);
+    b = b.substring(0, 7);
 
     const url = `/${a}/${b}`;
 
