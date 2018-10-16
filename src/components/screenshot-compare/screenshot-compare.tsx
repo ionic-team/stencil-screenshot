@@ -47,8 +47,16 @@ export class ScreenshotCompare {
 
   async loadBuilds(buildIdA: string, buildIdB: string) {
     const urlCompare = `${this.comparesUrl}${buildIdA}-${buildIdB}.json`;
-    const urlA = `${this.buildsUrl}${buildIdA}.json`;
-    const urlB = `${this.buildsUrl}${buildIdB}.json`;
+
+    let urlA = `${this.buildsUrl}${buildIdA}.json`;
+    if (buildIdA === 'master') {
+      urlA += `?ts=${Date.now()}`;
+    }
+
+    let urlB = `${this.buildsUrl}${buildIdB}.json`;
+    if (buildIdB === 'master') {
+      urlB += `?ts=${Date.now()}`;
+    }
 
     const requests = await Promise.all([
       fetch(urlCompare),
