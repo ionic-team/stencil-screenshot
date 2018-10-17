@@ -3,6 +3,7 @@ compare-table {
   display: table;
   width: 100%;
   margin-top: 84px;
+  margin-bottom: 12px;
 }
 
 compare-tbody {
