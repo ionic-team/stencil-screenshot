@@ -114,6 +114,19 @@ export namespace Components {
 
   interface ScreenshotLookup {}
   interface ScreenshotLookupAttributes extends StencilHTMLAttributes {}
+
+  interface ScreenshotPreview {
+    'appSrcUrl': string;
+    'buildsUrl': string;
+    'imagesUrl': string;
+    'match': MatchResults;
+  }
+  interface ScreenshotPreviewAttributes extends StencilHTMLAttributes {
+    'appSrcUrl'?: string;
+    'buildsUrl'?: string;
+    'imagesUrl'?: string;
+    'match'?: MatchResults;
+  }
 }
 
 declare global {
@@ -126,6 +139,7 @@ declare global {
     'CompareThead': Components.CompareThead;
     'ScreenshotCompare': Components.ScreenshotCompare;
     'ScreenshotLookup': Components.ScreenshotLookup;
+    'ScreenshotPreview': Components.ScreenshotPreview;
   }
 
   interface StencilIntrinsicElements {
@@ -137,6 +151,7 @@ declare global {
     'compare-thead': Components.CompareTheadAttributes;
     'screenshot-compare': Components.ScreenshotCompareAttributes;
     'screenshot-lookup': Components.ScreenshotLookupAttributes;
+    'screenshot-preview': Components.ScreenshotPreviewAttributes;
   }
 
 
@@ -188,6 +203,12 @@ declare global {
     new (): HTMLScreenshotLookupElement;
   };
 
+  interface HTMLScreenshotPreviewElement extends Components.ScreenshotPreview, HTMLStencilElement {}
+  var HTMLScreenshotPreviewElement: {
+    prototype: HTMLScreenshotPreviewElement;
+    new (): HTMLScreenshotPreviewElement;
+  };
+
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement
     'compare-analysis': HTMLCompareAnalysisElement
@@ -197,6 +218,7 @@ declare global {
     'compare-thead': HTMLCompareTheadElement
     'screenshot-compare': HTMLScreenshotCompareElement
     'screenshot-lookup': HTMLScreenshotLookupElement
+    'screenshot-preview': HTMLScreenshotPreviewElement
   }
 
   interface ElementTagNameMap {
@@ -208,6 +230,7 @@ declare global {
     'compare-thead': HTMLCompareTheadElement;
     'screenshot-compare': HTMLScreenshotCompareElement;
     'screenshot-lookup': HTMLScreenshotLookupElement;
+    'screenshot-preview': HTMLScreenshotPreviewElement;
   }
 
 
