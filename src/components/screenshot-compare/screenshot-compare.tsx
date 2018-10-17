@@ -29,6 +29,8 @@ export class ScreenshotCompare {
   async componentWillLoad() {
     if (this.compare) {
       this.diffs = loadServerSideCompare(this.compare, this.imagesUrl);
+      this.a = this.compare.a as any;
+      this.b = this.compare.b as any;
 
     } else if (this.match) {
       if (this.match.params.buildIdA && this.match.params.buildIdB) {
