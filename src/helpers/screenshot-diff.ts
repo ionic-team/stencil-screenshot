@@ -28,7 +28,8 @@ export function calculateScreenshotDiffs(imagesUrl: string, buildA: ScreenshotBu
       height: screenshotA.height,
       deviceScaleFactor: screenshotA.deviceScaleFactor,
       device: (screenshotA.device || screenshotA.userAgent),
-      show: false
+      show: false,
+      hasIntersected: false
     };
 
     if (!identical) {

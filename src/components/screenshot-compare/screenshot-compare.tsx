@@ -43,6 +43,50 @@ export class ScreenshotCompare {
   }
 
   componentDidLoad() {
+    if ('IntersectionObserver' in window) {
+      const options = {
+        root: document.querySelector('.scroll-y'),
+        rootMargin: '1200px'
+      }
+
+      const observer = new IntersectionObserver(entries => {
+        let doUpdate = false;
+
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const diff = this.diffs.find(d => entry.target.id === `d-${d.id}`);
+            if (diff) {
+              diff.hasIntersected = true;
+              doUpdate = true;
+            }
+          }
+        });
+
+        if (doUpdate) {
+          if ((window as any).requestIdleCallback) {
+            (window as any).requestIdleCallback(() => {
+              this.updateDiffs();
+            });
+          } else {
+            window.requestAnimationFrame(() => {
+              this.updateDiffs();
+            });
+          }
+        }
+      }, options);
+
+      const rows = document.querySelectorAll('compare-row');
+      for (let i = 0; i < rows.length; i++) {
+        observer.observe(rows[i]);
+      }
+
+    } else {
+      this.diffs.forEach(d => {
+        d.hasIntersected = true;
+      });
+      this.updateDiffs();
+    }
+
     if (this.filter && this.filter.diff) {
       this.navToDiff(this.filter.diff);
     }
@@ -185,7 +229,8 @@ function loadServerSideCompare(serverSideCompare: ScreenshotCompareResults, imag
       height: serverSideDiff.height,
       deviceScaleFactor: serverSideDiff.deviceScaleFactor,
       device: (serverSideDiff.device || serverSideDiff.userAgent),
-      show: false
+      show: false,
+      hasIntersected: false
     };
 
     return diff;

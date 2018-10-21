@@ -5,6 +5,10 @@ compare-row canvas {
   border-radius: var(--screenshot-border-radius);
 }
 
+compare-cell a {
+  display: block;
+}
+
 .is-loading {
   visibility: hidden;
 }

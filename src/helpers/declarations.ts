@@ -14,6 +14,7 @@ export interface ScreenshotDiff extends CoreScreenshotDiffOmit {
   imageUrlB: string;
   identical: boolean;
   show: boolean;
+  hasIntersected: boolean;
 }
 
 

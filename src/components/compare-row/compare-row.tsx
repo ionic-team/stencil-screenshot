@@ -18,12 +18,12 @@ export class CompareRow {
   @Event() compareLoaded: EventEmitter<ScreenshotDiff>;
   @Element() elm: HTMLElement;
 
-  @State() imageASrc = '';
-  @State() imageBSrc = '';
+  @State() imageASrc: string = null;
+  @State() imageBSrc: string = null;
 
-  @State() imageAClass: string;
-  @State() imageBClass: string;
-  @State() canvasClass: string;
+  @State() imageAClass = 'is-loading';
+  @State() imageBClass = 'is-loading';
+  @State() canvasClass = 'is-loading';
 
   imageA: HTMLImageElement;
   imageB: HTMLImageElement;
@@ -32,7 +32,7 @@ export class CompareRow {
   isImageALoaded = false;
   isImageBLoaded = false;
   canvas: HTMLCanvasElement;
-  initializeCalculateMismatch = false;
+  isMismatchInitialized = false;
   hasCalculatedMismatch = false;
 
   componentWillLoad() {
@@ -44,7 +44,7 @@ export class CompareRow {
   }
 
   loadScreenshots() {
-    if (!this.show) {
+    if (!this.show || !this.diff.hasIntersected) {
       return;
     }
 
@@ -54,14 +54,11 @@ export class CompareRow {
       return;
     }
 
-    if (this.initializeCalculateMismatch) {
+    if (this.isMismatchInitialized) {
       return;
     }
 
-    this.imageAClass = 'is-loading';
-    this.imageBClass = 'is-loading';
-    this.canvasClass = 'is-loading';
-    this.initializeCalculateMismatch = true;
+    this.isMismatchInitialized = true;
 
     if (this.jsonpUrl != null) {
       if (this.diff.imageA != null) {
