@@ -43,14 +43,16 @@ export class CompareAnalysis {
           <dt>Diff</dt>
           <dd><a href={'#diff-' + diff.id} onClick={this.navToDiff.bind(this)}>{diff.id}</a></dd>
         </div>
-        <div class={mismatchClass}>
-          <dt>Mismatched Pixels</dt>
-          <dd>{hasCalculated ? this.mismatchedPixels : '--'}</dd>
-        </div>
-        <div class={mismatchClass}>
-          <dt>Mismatched Ratio</dt>
-          <dd>{hasCalculated ? mismatchedRatio.toFixed(4) : '--'}</dd>
-        </div>
+        {diff.comparable ? [
+          <div class={mismatchClass}>
+            <dt>Mismatched Pixels</dt>
+            <dd>{hasCalculated ? this.mismatchedPixels : '--'}</dd>
+          </div>,
+          <div class={mismatchClass}>
+            <dt>Mismatched Ratio</dt>
+            <dd>{hasCalculated ? mismatchedRatio.toFixed(4) : '--'}</dd>
+          </div>
+        ]: null}
         <div>
           <dt>Device</dt>
           <dd>{diff.device}</dd>

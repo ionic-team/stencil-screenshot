@@ -82,7 +82,7 @@ export class CompareRow {
   async compareImages() {
     const diff = this.diff;
 
-    if (!this.isImageALoaded || !this.isImageBLoaded || this.hasCalculatedMismatch) {
+    if (!this.isImageALoaded || !this.isImageBLoaded || this.hasCalculatedMismatch || !diff.comparable) {
       return;
     }
     this.hasCalculatedMismatch = true;
@@ -111,35 +111,39 @@ export class CompareRow {
 
     return [
       <compare-cell>
-        <a href={this.imagesUrl + diff.imageA} target="_blank">
-          <img
-            src={this.imageASrc}
-            class={this.imageAClass}
-            style={style}
-            onLoad={this.diff.identical ? null : () => {
-              this.isImageALoaded = true;
-              this.imageAClass = 'has-loaded';
-              this.compareImages();
-            }}
-            ref={elm => this.imageA = elm}
-          />
-        </a>
+        {diff.imageA != null ? (
+          <a href={this.imagesUrl + diff.imageA} target="_blank">
+            <img
+              src={this.imageASrc}
+              class={this.imageAClass}
+              style={style}
+              onLoad={this.diff.identical ? null : () => {
+                this.isImageALoaded = true;
+                this.imageAClass = 'has-loaded';
+                this.compareImages();
+              }}
+              ref={elm => this.imageA = elm}
+            />
+          </a>
+        ): null}
       </compare-cell>,
 
       <compare-cell>
-        <a href={this.imagesUrl + diff.imageA} target="_blank">
-          <img
-            src={this.imageBSrc}
-            class={this.imageBClass}
-            style={style}
-            onLoad={this.diff.identical ? null : () => {
-              this.isImageBLoaded = true;
-              this.imageBClass = 'has-loaded';
-              this.compareImages();
-            }}
-            ref={elm => this.imageB = elm}
-          />
-        </a>
+        {diff.imageB != null ? (
+          <a href={this.imagesUrl + diff.imageA} target="_blank">
+            <img
+              src={this.imageBSrc}
+              class={this.imageBClass}
+              style={style}
+              onLoad={this.diff.identical ? null : () => {
+                this.isImageBLoaded = true;
+                this.imageBClass = 'has-loaded';
+                this.compareImages();
+              }}
+              ref={elm => this.imageB = elm}
+            />
+          </a>
+        ): null}
       </compare-cell>,
 
       <compare-cell>
@@ -153,6 +157,7 @@ export class CompareRow {
             height={Math.round(diff.height * diff.deviceScaleFactor)}
             class={this.canvasClass}
             style={style}
+            hidden={!diff.comparable}
             ref={(elm) => this.canvas = elm}/>
         )}
       </compare-cell>,

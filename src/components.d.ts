@@ -23,11 +23,11 @@ import {
   ScreenshotBuild,
 } from '@stencil/core/dist/screenshot';
 import {
-  ScreenshotCompareResults,
-} from '@stencil/core/screenshot';
-import {
   MatchResults,
 } from '@stencil/router';
+import {
+  ScreenshotBuild as ScreenshotBuild2,
+} from '@stencil/core/screenshot';
 
 
 export namespace Components {
@@ -94,18 +94,20 @@ export namespace Components {
   }
 
   interface ScreenshotCompare {
+    'a': ScreenshotBuild;
     'appSrcUrl': string;
+    'b': ScreenshotBuild;
     'buildsUrl': string;
-    'compare': ScreenshotCompareResults;
     'comparesUrl': string;
     'imagesUrl': string;
     'jsonpUrl': string;
     'match': MatchResults;
   }
   interface ScreenshotCompareAttributes extends StencilHTMLAttributes {
+    'a'?: ScreenshotBuild;
     'appSrcUrl'?: string;
+    'b'?: ScreenshotBuild;
     'buildsUrl'?: string;
-    'compare'?: ScreenshotCompareResults;
     'comparesUrl'?: string;
     'imagesUrl'?: string;
     'jsonpUrl'?: string;
