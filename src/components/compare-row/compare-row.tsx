@@ -130,7 +130,7 @@ export class CompareRow {
 
       <compare-cell>
         {diff.imageB != null ? (
-          <a href={this.imagesUrl + diff.imageA} target="_blank">
+          <a href={this.imagesUrl + diff.imageB} target="_blank">
             <img
               src={this.imageBSrc}
               class={this.imageBClass}
