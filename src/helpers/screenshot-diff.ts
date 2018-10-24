@@ -44,7 +44,10 @@ export function calculateScreenshotDiffs(imagesUrl: string, buildA: ScreenshotBu
     diff.comparable = (diff.imageA != null && diff.imageB != null);
     diff.identical = (diff.comparable && diff.imageA === diff.imageB);
 
-    if (!diff.identical) {
+    if (diff.identical) {
+      diff.identical = true;
+
+    } else {
       const cachedMismatchedPixels = getMismatchedPixels(diff.imageA, diff.imageB);
       if (typeof cachedMismatchedPixels === 'number') {
         diff.mismatchedPixels = cachedMismatchedPixels;
