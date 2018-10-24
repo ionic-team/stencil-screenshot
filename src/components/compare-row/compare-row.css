@@ -1,12 +1,9 @@
 
 compare-row img,
 compare-row canvas {
+  display: block;
   box-shadow: var(--screenshot-box-shadow);
   border-radius: var(--screenshot-border-radius);
-}
-
-compare-cell a {
-  display: block;
 }
 
 .is-loading {

@@ -131,7 +131,7 @@ export class CompareRow {
               ref={elm => this.imageA = elm}
             />
           </a>
-        ): null}
+        ): <img style={style} class="is-loading"/>}
       </compare-cell>,
 
       <compare-cell>
@@ -149,7 +149,7 @@ export class CompareRow {
               ref={elm => this.imageB = elm}
             />
           </a>
-        ): null}
+        ): <img style={style} class="is-loading"/>}
       </compare-cell>,
 
       <compare-cell>
