@@ -50,7 +50,13 @@ export class CompareRow {
 
     if (this.diff.identical) {
       this.imageASrc = this.imagesUrl + this.diff.imageA;
+      this.isImageALoaded = true;
+      this.imageAClass = 'has-loaded';
+
       this.imageBSrc = this.imagesUrl + this.diff.imageB;
+      this.isImageBLoaded = true;
+      this.imageBClass = 'has-loaded';
+
       return;
     }
 
