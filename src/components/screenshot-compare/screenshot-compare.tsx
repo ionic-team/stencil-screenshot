@@ -22,8 +22,8 @@ export class ScreenshotCompare {
   @State() filter: FilterData;
   @State() diffs: ScreenshotDiff[] = [];
 
-  @Prop() a: ScreenshotBuild;
-  @Prop() b: ScreenshotBuild;
+  @Prop({ mutable: true }) a: ScreenshotBuild;
+  @Prop({ mutable: true }) b: ScreenshotBuild;
 
   async componentWillLoad() {
     if (this.match) {
