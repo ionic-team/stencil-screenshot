@@ -30,6 +30,8 @@ export class ScreenshotPreview {
 
       if (req.ok) {
         this.build = await req.json();
+
+        document.title = `${this.build.id} HTML Preview`;
       }
     }
   }
