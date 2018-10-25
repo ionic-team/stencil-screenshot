@@ -31,31 +31,29 @@ export class ScreenshotPreview {
       if (req.ok) {
         this.build = await req.json();
 
-        document.title = `${this.build.id} HTML Preview`;
+        document.title = `${this.build.id} Preview: ${this.build.message}`;
       }
     }
   }
 
   render() {
-    if (!this.build) {
-      return;
-    }
-
     const previews: PreviewData[] = [];
 
-    this.build.screenshots.forEach(s => {
-      const parts = s.testPath.split('/');
-      parts.pop();
-      const url = `/data/tests/${this.build.id}/${parts.join('/')}/`;
+    if (this.build) {
+      this.build.screenshots.forEach(s => {
+        const parts = s.testPath.split('/');
+        parts.pop();
+        const url = `/data/tests/${this.build.id}/${parts.join('/')}/`;
 
-      if (!previews.some(p => p.url === url)) {
-        const previewUrl: PreviewData = {
-          desc: s.desc.split(',')[0],
-          url: url
-        };
-        previews.push(previewUrl)
-      }
-    });
+        if (!previews.some(p => p.url === url)) {
+          const previewUrl: PreviewData = {
+            desc: s.desc.split(',')[0],
+            url: url
+          };
+          previews.push(previewUrl)
+        }
+      });
+    }
 
     previews.sort((a, b) => {
       if (a.desc.toLowerCase() < b.desc.toLowerCase()) return -1;
@@ -71,15 +69,17 @@ export class ScreenshotPreview {
 
         <section class="content">
 
-          <h1>
-            <a href={this.build.url} target="_blank">
-              {this.build.message}
-            </a>
-          </h1>
+          {this.build ? (
+            <h1>
+              <a href={this.build.url}>
+                {this.build.message}
+              </a>
+            </h1>
+          ) : null}
 
           {previews.map(preview => (
             <div>
-              <a href={preview.url} target="_blank">
+              <a href={preview.url}>
                 {preview.desc}
               </a>
             </div>

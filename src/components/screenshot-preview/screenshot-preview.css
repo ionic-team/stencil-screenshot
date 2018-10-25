@@ -13,7 +13,7 @@ screenshot-preview h1 {
 }
 
 screenshot-preview .content {
-  padding: 100px 20px 20px 20px;
+  padding: 80px 20px 20px 20px;
 }
 
 screenshot-preview a {
@@ -25,4 +25,18 @@ screenshot-preview a {
 
 screenshot-preview a:hover {
   text-decoration: underline;
+}
+
+screenshot-preview compare-header {
+  height: auto;
+}
+
+
+@media (max-width: 480px) {
+
+  screenshot-preview a {
+    padding: 12px;
+    font-size: 18px;
+  }
+
 }
