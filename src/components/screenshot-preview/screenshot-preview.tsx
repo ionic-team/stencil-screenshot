@@ -80,7 +80,7 @@ export class ScreenshotPreview {
           {previews.map(preview => (
             <div>
               <a href={preview.url} target="_blank">
-                <p>{preview.desc}</p>
+                {preview.desc}
               </a>
             </div>
           ))}

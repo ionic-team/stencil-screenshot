@@ -1,24 +1,29 @@
+screenshot-preview {
+  display: block;
+}
 
-.screenshot-preview .scroll-y {
+screenshot-preview .scroll-y {
   width: 100%;
 }
 
-.screenshot-preview h1 {
+screenshot-preview h1 {
   color: var(--analysis-data-color);
-  font-size: 14px;
+  font-size: 16px;
 }
 
-.screenshot-preview .content {
-  margin-top: 84px;
+screenshot-preview .content {
+  margin-top: 100px;
   margin-bottom: 12px;
-  margin-left: 58px;
+  margin-left: 20px;
 }
 
-.screenshot-preview a {
+screenshot-preview a {
+  display: block;
+  padding: 8px;
   color: var(--analysis-data-color);
   text-decoration: none;
 }
 
-.screenshot-preview a:hover {
+screenshot-preview a:hover {
   text-decoration: underline;
 }
