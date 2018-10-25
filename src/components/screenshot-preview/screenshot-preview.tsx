@@ -46,7 +46,7 @@ export class ScreenshotPreview {
     this.build.screenshots.forEach(s => {
       const parts = s.testPath.split('/');
       parts.pop();
-      const url = `/test/${this.build.id}/${parts.join('/')}/`;
+      const url = `/data/tests/${this.build.id}/${parts.join('/')}/`;
 
       if (!previews.some(p => p.url === url)) {
         const previewUrl: PreviewData = {

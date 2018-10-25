@@ -78,13 +78,13 @@ export class CompareAnalysis {
         {diff.imageA ? (
           <div>
             <dt>Left Preview</dt>
-            <dd><a href={`/test/${this.aId}/${previewUrl}/`} target="_blank">HTML</a></dd>
+            <dd><a href={`/data/tests/${this.aId}/${previewUrl}/`} target="_blank">HTML</a></dd>
           </div>
         ) : null}
         {diff.imageB ? (
           <div>
             <dt>Right Preview</dt>
-            <dd><a href={`/test/${this.bId}/${previewUrl}/`} target="_blank">HTML</a></dd>
+            <dd><a href={`/data/tests/${this.bId}/${previewUrl}/`} target="_blank">HTML</a></dd>
           </div>
         ) : null}
         <div class="desc">
