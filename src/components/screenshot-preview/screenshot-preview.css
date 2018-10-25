@@ -9,12 +9,11 @@ screenshot-preview .scroll-y {
 screenshot-preview h1 {
   color: var(--analysis-data-color);
   font-size: 16px;
+  margin: 0;
 }
 
 screenshot-preview .content {
-  margin-top: 100px;
-  margin-bottom: 12px;
-  margin-left: 20px;
+  padding: 100px 20px 20px 20px;
 }
 
 screenshot-preview a {
