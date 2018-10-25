@@ -176,6 +176,8 @@ export class ScreenshotCompare {
               {this.diffs.map(diff => (
                 <compare-row
                   key={diff.id}
+                  aId={this.a.id}
+                  bId={this.b.id}
                   id={'d-' + diff.id}
                   show={diff.show}
                   hidden={!diff.show}

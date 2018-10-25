@@ -36,10 +36,14 @@ export namespace Components {
   interface AppRootAttributes extends StencilHTMLAttributes {}
 
   interface CompareAnalysis {
+    'aId': string;
+    'bId': string;
     'diff': ScreenshotDiff;
     'mismatchedPixels': number;
   }
   interface CompareAnalysisAttributes extends StencilHTMLAttributes {
+    'aId'?: string;
+    'bId'?: string;
     'diff'?: ScreenshotDiff;
     'mismatchedPixels'?: number;
     'onDiffNavChange'?: (event: CustomEvent<string>) => void;
@@ -69,12 +73,16 @@ export namespace Components {
   }
 
   interface CompareRow {
+    'aId': string;
+    'bId': string;
     'diff': ScreenshotDiff;
     'imagesUrl': string;
     'jsonpUrl': string;
     'show': boolean;
   }
   interface CompareRowAttributes extends StencilHTMLAttributes {
+    'aId'?: string;
+    'bId'?: string;
     'diff'?: ScreenshotDiff;
     'imagesUrl'?: string;
     'jsonpUrl'?: string;

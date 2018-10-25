@@ -9,6 +9,8 @@ import { ScreenshotDiff } from '../../helpers/declarations';
 })
 export class CompareAnalysis {
 
+  @Prop() aId: string;
+  @Prop() bId: string;
   @Prop() diff: ScreenshotDiff;
   @Prop() mismatchedPixels: number = null;
   @Event() diffNavChange: EventEmitter<string>;
@@ -33,6 +35,10 @@ export class CompareAnalysis {
     } else {
       mismatchClass = 'not-calculated';
     }
+
+    const parts = diff.testPath.split('/');
+    parts.pop();
+    const previewUrl = parts.join('/');
 
     return [
       <p class="test-path">
@@ -69,6 +75,18 @@ export class CompareAnalysis {
           <dt>Device Scale Factor</dt>
           <dd>{diff.deviceScaleFactor}</dd>
         </div>
+        {diff.imageA ? (
+          <div>
+            <dt>Left Preview</dt>
+            <dd><a href={`/test/${this.aId}/${previewUrl}/`} target="_blank">HTML</a></dd>
+          </div>
+        ) : null}
+        {diff.imageB ? (
+          <div>
+            <dt>Right Preview</dt>
+            <dd><a href={`/test/${this.bId}/${previewUrl}/`} target="_blank">HTML</a></dd>
+          </div>
+        ) : null}
         <div class="desc">
           <dt>Description</dt>
           <dd>{diff.desc}</dd>

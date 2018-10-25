@@ -11,6 +11,8 @@ import { loadJsonpDataUri } from '../../helpers/image-store';
 })
 export class CompareRow {
 
+  @Prop() aId: string;
+  @Prop() bId: string;
   @Prop() imagesUrl: string;
   @Prop() jsonpUrl: string;
   @Prop() diff: ScreenshotDiff;
@@ -170,6 +172,8 @@ export class CompareRow {
 
       <compare-cell>
         <compare-analysis
+          aId={this.aId}
+          bId={this.bId}
           mismatchedPixels={this.diff.mismatchedPixels}
           diff={this.diff}/>
       </compare-cell>
