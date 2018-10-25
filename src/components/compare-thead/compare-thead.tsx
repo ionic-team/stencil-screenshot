@@ -36,19 +36,21 @@ export class CompareTHead {
 
       <th-cell>
         <div style={style}>
-          <a href={this.a.url}>{this.a.message}</a>
+          <a href={this.a.url} target="_blank">{this.a.message}</a>
         </div>
       </th-cell>,
 
       <th-cell>
         <div style={style}>
-          <a href={this.b.url}>{this.b.message}</a>
+          <a href={this.b.url} target="_blank">{this.b.message}</a>
         </div>
       </th-cell>,
 
       <th-cell>
         <div style={style}>
-          Diff
+          <a href={`https://github.com/ionic-team/ionic/compare/${this.a.id}...${this.b.id}`} target="_blank">
+            Compare: {this.a.id} - {this.b.id}
+          </a>
         </div>
       </th-cell>,
 
