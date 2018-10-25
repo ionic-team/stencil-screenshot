@@ -17,12 +17,3 @@ export interface ScreenshotDiff extends CoreScreenshotDiffOmit {
   show: boolean;
   hasIntersected: boolean;
 }
-
-
-export interface Repo {
-  orgName: string;
-  orgUrl: string;
-  repoName: string;
-  repoUrl: string;
-  commitsUrl: string;
-}

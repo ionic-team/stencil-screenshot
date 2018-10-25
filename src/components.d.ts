@@ -10,7 +10,6 @@ import '@stencil/core';
 import '@stencil/router';
 import '@stencil/state-tunnel';
 import {
-  Repo,
   ScreenshotDiff,
 } from './helpers/declarations';
 import {
@@ -63,13 +62,11 @@ export namespace Components {
     'appSrcUrl': string;
     'diffs': ScreenshotDiff[];
     'filter': FilterData;
-    'repo': Repo;
   }
   interface CompareHeaderAttributes extends StencilHTMLAttributes {
     'appSrcUrl'?: string;
     'diffs'?: ScreenshotDiff[];
     'filter'?: FilterData;
-    'repo'?: Repo;
   }
 
   interface CompareRow {
