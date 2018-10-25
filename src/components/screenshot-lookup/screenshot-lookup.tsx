@@ -54,8 +54,7 @@ export class ScreenshotLookup {
       <section>
 
         {this.build ? (
-          <section>
-            <h1>Master Preview</h1>
+          <section class="master">
             <p><a href="/master">{this.build.message}</a></p>
           </section>
         ) : null}
