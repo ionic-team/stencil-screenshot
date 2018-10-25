@@ -1,4 +1,5 @@
 import { Component } from '@stencil/core';
+import { ScreenshotBuild } from '@stencil/core/dist/screenshot';
 
 
 @Component({
@@ -10,6 +11,17 @@ export class ScreenshotLookup {
 
   a = '';
   b = '';
+  build: ScreenshotBuild;
+
+  async componentWillLoad() {
+    const dataUrl = `/data/builds/master.json?ts=${Date.now()}`;
+
+    const req = await fetch(dataUrl);
+
+    if (req.ok) {
+      this.build = await req.json();
+    }
+  }
 
   onSubmit(ev: UIEvent) {
     ev.preventDefault();
@@ -40,6 +52,13 @@ export class ScreenshotLookup {
         </div>
       </header>,
       <section>
+
+        {this.build ? (
+          <section>
+            <h1>Master Preview</h1>
+            <p><a href="/master">{this.build.message}</a></p>
+          </section>
+        ) : null}
 
         <form onSubmit={this.onSubmit.bind(this)}>
 

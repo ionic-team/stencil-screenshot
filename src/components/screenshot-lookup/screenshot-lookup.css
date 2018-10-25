@@ -21,6 +21,16 @@ h1 {
   font-size: 18px;
 }
 
+a {
+  padding: 8px;
+  color: var(--analysis-data-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 form {
   width: 160px;
   margin: 40px auto;
