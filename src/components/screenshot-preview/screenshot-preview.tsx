@@ -67,9 +67,9 @@ export class ScreenshotPreview {
       <compare-header
         appSrcUrl={this.appSrcUrl}/>,
 
-      <section class="scroll-x">
+      <section class="scroll-y">
 
-        <section class="scroll-y">
+        <section class="content">
 
           <h1>
             <a href={this.build.url} target="_blank">
@@ -78,7 +78,7 @@ export class ScreenshotPreview {
           </h1>
 
           {previews.map(preview => (
-            <div class="screenshot-preview-row">
+            <div>
               <a href={preview.url} target="_blank">
                 <p>{preview.desc}</p>
               </a>
