@@ -33,6 +33,8 @@ screenshot-preview compare-header {
   width: 100%;
   width: 100%;
   height: auto;
+
+  padding-top: env(safe-area-inset-top);
 }
 
 screenshot-preview compare-header compare-filter {

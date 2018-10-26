@@ -17,22 +17,24 @@ export class ScreenshotPreview {
   build: ScreenshotBuild;
 
   async componentWillLoad() {
+    let buildId = 'master';
+
     if (this.match && this.match.params.buildId) {
-      const buildId: string = this.match.params.buildId.substr(0, 7);
+      buildId = this.match.params.buildId.substr(0, 7);
+    }
 
-      let dataUrl = `${this.buildsUrl}${buildId}.json`;
+    let dataUrl = `${this.buildsUrl}${buildId}.json`;
 
-      if (buildId === 'master') {
-        dataUrl += `?ts=${Date.now()}`;
-      }
+    if (buildId === 'master') {
+      dataUrl += `?ts=${Date.now()}`;
+    }
 
-      const req = await fetch(dataUrl);
+    const req = await fetch(dataUrl);
 
-      if (req.ok) {
-        this.build = await req.json();
+    if (req.ok) {
+      this.build = await req.json();
 
-        document.title = `${this.build.id} Preview: ${this.build.message}`;
-      }
+      document.title = `${this.build.id} Preview: ${this.build.message}`;
     }
   }
 

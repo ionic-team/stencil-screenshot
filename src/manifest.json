@@ -1,7 +1,7 @@
 {
-  "name": "Stencil Screenshot",
+  "name": "Screenshot",
   "short_name": "Screenshot",
-  "start_url": "/master",
+  "start_url": "/",
   "display": "standalone",
   "icons": [{
     "src": "/assets/favicon.icon",
