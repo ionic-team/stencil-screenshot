@@ -13,7 +13,7 @@ screenshot-preview h1 {
 }
 
 screenshot-preview .content {
-  padding: 80px 20px 20px 20px;
+  padding: 80px 20px 20px 120px;
 }
 
 screenshot-preview a {
@@ -28,9 +28,16 @@ screenshot-preview a:hover {
 }
 
 screenshot-preview compare-header {
+  left: 0;
+  padding: 0;
+  width: 100%;
+  width: 100%;
   height: auto;
 }
 
+screenshot-preview compare-header compare-filter {
+  display: none;
+}
 
 @media (max-width: 480px) {
 
