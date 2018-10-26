@@ -46,4 +46,6 @@ compare-thead {
   height: 100vh;
   overflow-x: hidden;
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  will-change: scroll-position;
 }
