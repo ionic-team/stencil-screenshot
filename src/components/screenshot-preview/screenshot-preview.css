@@ -39,4 +39,8 @@ screenshot-preview compare-header {
     font-size: 18px;
   }
 
+  screenshot-preview a:hover {
+    text-decoration: none;
+  }
+
 }
