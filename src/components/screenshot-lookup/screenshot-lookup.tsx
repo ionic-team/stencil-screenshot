@@ -47,7 +47,7 @@ export class ScreenshotLookup {
       <header>
         <div class="logo">
           <a href="/">
-            <img src="/assets/logo.png"/>
+            <img src="/assets/logo.png?1"/>
           </a>
         </div>
       </header>,

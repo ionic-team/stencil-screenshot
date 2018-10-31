@@ -19,7 +19,7 @@ export class CompareHeader {
       <header>
         <div class="logo">
           <a href="/">
-            <img src={this.appSrcUrl + '/assets/logo.png'}/>
+            <img src={this.appSrcUrl + '/assets/logo.png?1'}/>
           </a>
         </div>
         <compare-filter
