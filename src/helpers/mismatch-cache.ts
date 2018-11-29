@@ -1,7 +1,7 @@
 
 
-export function getMismatchedPixels(imageA: string, imageB: string) {
-  const cacheKey = getCacheKey(imageA, imageB);
+export function getMismatchedPixels(imageA: string, imageB: string, threshold: number) {
+  const cacheKey = getCacheKey(imageA, imageB, threshold);
   const mismatchedPixels = localStorage.getItem(cacheKey);
   if (typeof mismatchedPixels === 'string') {
     const num = parseInt(mismatchedPixels, 10);
@@ -13,12 +13,12 @@ export function getMismatchedPixels(imageA: string, imageB: string) {
 }
 
 
-export function setMismatchedPixels(imageA: string, imageB: string, mismatchedPixels: number) {
-  const cacheKey = getCacheKey(imageA, imageB);
+export function setMismatchedPixels(imageA: string, imageB: string, threshold: number, mismatchedPixels: number) {
+  const cacheKey = getCacheKey(imageA, imageB, threshold);
   localStorage.setItem(cacheKey, String(mismatchedPixels));
 }
 
 
-function getCacheKey(imageA: string, imageB: string) {
-  return `screenshot_mismatch_${imageA}_${imageB}`;
+function getCacheKey(imageA: string, imageB: string, threshold: number) {
+  return `screenshot_mismatch_${imageA}_${imageB}_${threshold}`;
 }

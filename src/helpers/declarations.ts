@@ -16,4 +16,5 @@ export interface ScreenshotDiff extends CoreScreenshotDiffOmit {
   comparable: boolean;
   show: boolean;
   hasIntersected: boolean;
+  threshold: number;
 }

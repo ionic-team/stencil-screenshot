@@ -1,7 +1,7 @@
 import pixelmatch from 'pixelmatch'
 
 
-export function getMismatch(imageA: HTMLImageElement, imageB: HTMLImageElement, canvasDiff: HTMLCanvasElement, naturalWidth: number, naturalHeight: number) {
+export function getMismatch(imageA: HTMLImageElement, imageB: HTMLImageElement, canvasDiff: HTMLCanvasElement, naturalWidth: number, naturalHeight: number, threshold: number) {
   let mismatchedPixels = -1;
 
   try {
@@ -30,7 +30,7 @@ export function getMismatch(imageA: HTMLImageElement, imageB: HTMLImageElement, 
     const ctxDiff = canvasDiff.getContext('2d');
     const imageDiff = ctxDiff.createImageData(naturalWidth, canvasA.height);
 
-    mismatchedPixels = pixelmatch(dataA, dataB, (imageDiff as any).data, naturalWidth, naturalHeight, { threshold: 0.1 });
+    mismatchedPixels = pixelmatch(dataA, dataB, (imageDiff as any).data, naturalWidth, naturalHeight, { threshold: threshold });
 
     ctxDiff.putImageData(imageDiff, 0, 0);
 

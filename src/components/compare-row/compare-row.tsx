@@ -100,12 +100,13 @@ export class CompareRow {
       this.imageB,
       this.canvas,
       Math.round(diff.width * diff.deviceScaleFactor),
-      Math.round(diff.height * diff.deviceScaleFactor)
+      Math.round(diff.height * diff.deviceScaleFactor),
+      diff.threshold
     );
 
     this.canvasClass = 'has-loaded';
 
-    setMismatchedPixels(diff.imageA, diff.imageB, diff.mismatchedPixels);
+    setMismatchedPixels(diff.imageA, diff.imageB, diff.mismatchedPixels, diff.threshold);
 
     this.compareLoaded.emit(diff);
   }

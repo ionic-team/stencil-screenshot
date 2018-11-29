@@ -27,7 +27,8 @@ export function calculateScreenshotDiffs(imagesUrl: string, buildA: ScreenshotBu
       deviceScaleFactor: screenshotB.deviceScaleFactor,
       device: (screenshotB.device || screenshotB.userAgent),
       show: false,
-      hasIntersected: false
+      hasIntersected: false,
+      threshold: typeof screenshotB.threshold === 'number' ? screenshotB.threshold : 0.05
     };
     diffs.push(diff);
   });
@@ -48,7 +49,7 @@ export function calculateScreenshotDiffs(imagesUrl: string, buildA: ScreenshotBu
       diff.mismatchedPixels = 0;
 
     } else {
-      const cachedMismatchedPixels = getMismatchedPixels(diff.imageA, diff.imageB);
+      const cachedMismatchedPixels = getMismatchedPixels(diff.imageA, diff.imageB, diff.threshold);
       if (typeof cachedMismatchedPixels === 'number') {
         diff.mismatchedPixels = cachedMismatchedPixels;
 
