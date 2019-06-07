@@ -10,7 +10,7 @@ export function calculateScreenshotDiffs(imagesUrl: string, buildA: ScreenshotBu
     return diffs;
   }
 
-  buildB.screenshots.forEach(screenshotB => {
+  buildB.screenshots.forEach((screenshotB: any) => {
     const diff: d.ScreenshotDiff = {
       id: screenshotB.id,
       desc: screenshotB.desc,

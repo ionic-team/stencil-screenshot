@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Prop, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Prop, State, h } from '@stencil/core';
 import { ScreenshotDiff } from '../../helpers/declarations';
 import { setMismatchedPixels } from '../../helpers/mismatch-cache';
 import { getMismatch } from '../../helpers/pixelmatch';

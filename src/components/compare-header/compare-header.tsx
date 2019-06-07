@@ -1,5 +1,5 @@
 import { ScreenshotDiff } from '../../helpers/declarations';
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, h } from '@stencil/core';
 import { FilterData } from '../../helpers/filter-data';
 
 

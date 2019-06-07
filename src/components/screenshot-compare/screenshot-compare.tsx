@@ -1,4 +1,4 @@
-import { Component, Prop, Listen, State } from '@stencil/core';
+import { Component, Prop, Listen, State, h } from '@stencil/core';
 import { ScreenshotBuild } from '@stencil/core/screenshot';
 import { ScreenshotDiff } from '../../helpers/declarations';
 import { FilterData, getFilterData, updateFilterData } from '../../helpers/filter-data';

@@ -1,4 +1,4 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, h } from '@stencil/core';
 import { ScreenshotDiff } from '../../helpers/declarations';
 import { ScreenshotBuild } from '@stencil/core/dist/screenshot';
 

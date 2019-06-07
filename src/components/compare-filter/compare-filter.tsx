@@ -1,4 +1,4 @@
-import { Component, Event, EventEmitter, Prop } from '@stencil/core';
+import { Component, Event, EventEmitter, Prop, h } from '@stencil/core';
 import { FilterData } from '../../helpers/filter-data';
 import { ScreenshotDiff } from '../../helpers/declarations';
 
