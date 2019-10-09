@@ -10,12 +10,11 @@
     "test.watch": "stencil test --spec --watch"
   },
   "dependencies": {
-    "pixelmatch": "^4.0.2"
+    "pixelmatch": "^5.0.2"
   },
   "devDependencies": {
-    "@stencil/core": "1.0.4",
+    "@stencil/core": "1.0.6",
     "@stencil/router": "^1.0.0",
-    "@types/pixelmatch": "^4.0.0",
     "puppeteer": "1.17.0",
     "workbox-build": "^4.3.1"
   },
