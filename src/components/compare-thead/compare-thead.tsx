@@ -1,6 +1,6 @@
 import { Component, Prop, h } from '@stencil/core';
 import { ScreenshotDiff } from '../../helpers/declarations';
-import { ScreenshotBuild } from '@stencil/core/dist/screenshot';
+import { ScreenshotBuild } from '@stencil/core/internal';
 
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, h } from '@stencil/core';
-import { ScreenshotBuild } from '@stencil/core/dist/screenshot';
+import { ScreenshotBuild } from '@stencil/core/internal';
 
 
 @Component({
