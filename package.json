@@ -10,7 +10,7 @@
     "test.watch": "stencil test --spec --watch"
   },
   "dependencies": {
-    "pixelmatch": "^5.0.2"
+    "pixelmatch": "^5.2.1"
   },
   "devDependencies": {
     "@stencil/core": "^1.14.0",
