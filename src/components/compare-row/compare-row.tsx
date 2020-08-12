@@ -125,7 +125,6 @@ export class CompareRow {
             <img
               src={this.imageASrc}
               class={this.imageAClass}
-              style={style}
               onLoad={this.diff.identical ? null : () => {
                 this.isImageALoaded = true;
                 this.imageAClass = 'has-loaded';
@@ -143,7 +142,6 @@ export class CompareRow {
             <img
               src={this.imageBSrc}
               class={this.imageBClass}
-              style={style}
               onLoad={this.diff.identical ? null : () => {
                 this.isImageBLoaded = true;
                 this.imageBClass = 'has-loaded';
